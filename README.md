@@ -2,11 +2,12 @@
 
 This library provides an API that simplifies writing integration tests for Godot projects. It is agnostic of the test framework that you use, so you can use it with any C# test framework that works with Godot (or no framework at all if you prefer).
 
+**Note: This is currently in development. The API is not stable.** 
 
 ## Usage overview
 ### Fixture
 
-This library provides a `Fixture` class which you can use to create and automatically dispose of Godot nodes and scenes. The fixture ensures that all tree modifications run on the main thread. 
+This library provides a `Fixture` clasks which you can use to create and automatically dispose of Godot nodes and scenes. The fixture ensures that all tree modifications run on the main thread. 
 
 ```csharp
 using GodotTestDriver;
