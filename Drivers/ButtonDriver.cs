@@ -32,14 +32,14 @@ namespace GodotTestDriver.Drivers
             button.EmitSignal("pressed");
         }
 
-        public override async Task Click()
+        public override async Task ClickCenter(ButtonList button = ButtonList.Left)
         {
             if (Disabled)
             {
                 throw new InvalidOperationException("Button is disabled and cannot be pressed.");
             }
 
-            await base.Click();
+            await base.ClickCenter(button);
         }
     }
 }

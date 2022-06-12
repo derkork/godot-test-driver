@@ -24,7 +24,7 @@ namespace GodotTestDriver.Drivers
             get
             {
                 var node = Root;
-                return node != null && Object.IsInstanceValid(node) && node.IsVisibleInTree();
+                return node?.IsVisibleInTree() ?? false;
             }
         }
 
@@ -41,7 +41,7 @@ namespace GodotTestDriver.Drivers
             get
             {
                 var root = Root;
-                if (root == null ||  !Object.IsInstanceValid(root) || !root.IsVisibleInTree())
+                if (root == null || !root.IsVisibleInTree())
                 {
                     throw new InvalidOperationException("Cannot interact with CanvasItem because it is not visible.");
                 }

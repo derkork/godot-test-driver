@@ -15,7 +15,7 @@ namespace GodotTestDriver.Drivers
         }
         
 
-        public Vector2 GlobalPosition => PresentRoot.GlobalPosition;
+        public Vector2 GlobalPosition => Root?.GlobalPosition ?? Vector2.Inf;
 
     }
 }

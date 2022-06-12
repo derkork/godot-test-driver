@@ -21,7 +21,7 @@ namespace GodotTestDriver.Drivers
         public async Task Type(string text)
         {
             var edit = VisibleRoot;
-            await Click();
+            await ClickCenter();
             edit.Text = text;
             edit.EmitSignal("text_changed", text);
         }
@@ -30,8 +30,9 @@ namespace GodotTestDriver.Drivers
         public async Task Enter(string text)
         {
             var edit = VisibleRoot;
-            await Click();
-            edit.Text = text;
+            // first type the text, so the text change events are triggered
+            await Type(text);
+            // then send the "text_entered" event 
             edit.EmitSignal("text_entered", text);
         }
         

@@ -48,7 +48,7 @@ namespace GodotTestDriver.Drivers
         /// node is not currently present in the scene tree or invalid.
         /// </summary>
         [CanBeNull]
-        protected T Root
+        public T Root
         {
             get
             {
@@ -62,7 +62,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns the root node and ensures it is present.
         /// </summary>
-        protected T PresentRoot {
+        public T PresentRoot {
             get
             {
                 var result = Root;

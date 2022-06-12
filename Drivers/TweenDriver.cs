@@ -1,8 +1,7 @@
 ﻿using System;
 using Godot;
-using GodotTestDriver.Drivers;
 
-namespace YoHDot.Tests.TestDrivers.BuiltInNodes
+namespace GodotTestDriver.Drivers
 {
     public class TweenDriver : NodeDriver<Tween>
     {
@@ -10,6 +9,6 @@ namespace YoHDot.Tests.TestDrivers.BuiltInNodes
         {
         }
 
-        public bool IsRunningAnimations => PresentRoot.IsActive();
+        public bool IsRunningAnimations => Root?.IsActive() ?? false;
     }
 }

@@ -38,10 +38,10 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Clicks the control with the mouse in the center.
         /// </summary>
-        public virtual async Task Click()
+        public virtual async Task ClickCenter(ButtonList button = ButtonList.Left)
         {
             var control = VisibleRoot;
-            await control.GetViewport().ClickMouseAt(control.GetGlobalRect().Center());
+            await control.GetViewport().ClickMouseAt(control.GetGlobalRect().Center(), button);
         }
 
 
