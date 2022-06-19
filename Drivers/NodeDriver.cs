@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using JetBrains.Annotations;
 using Object = Godot.Object;
@@ -15,9 +17,8 @@ namespace GodotTestDriver.Drivers
         /// The root node that the test driver is working on.
         /// </summary>
         public abstract Node RootNode { get; }
-        
     }
-    
+
     /// <summary>
     /// Base class for test drivers that work on nodes.
     /// </summary>
@@ -26,34 +27,72 @@ namespace GodotTestDriver.Drivers
     {
         private readonly Func<T> _producer;
 
-        protected NodeDriver(Func<T> producer)
+        /// <summary>
+        /// The description given to the test driver.
+        /// </summary>
+        public string Description { get; }
+
+
+        protected NodeDriver(Func<T> producer, string description = "")
         {
             _producer = producer;
+            Description = description;
         }
 
         /// <summary>
         /// Is the node currently present in the tree?
         /// </summary>
-        public bool IsPresent
+        public bool IsPresent => Root != null;
+
+        /// <summary>
+        /// Builds drivers for a set of children of the current driver's root node. The first function needs to return
+        /// the currently applicable child nodes, the second function will produce a driver for each child.
+        /// </summary>
+        protected IEnumerable<TDriver> BuildDrivers<TDriver, TNode>(Func<T, IEnumerable<TNode>> childSelector,
+            Func<Func<TNode>, TDriver> driverFactory)
+            where TDriver : NodeDriver where TNode:Node
         {
-            get
+            var root = Root;
+            if (root == null)
             {
-                var root = Root;
-                return root != null && Object.IsInstanceValid(root);
+                yield return null;
+            }
+
+            var children = childSelector(root).ToList();
+            foreach (var child in children)
+            {
+                yield return driverFactory(() => Root?.GetNode<TNode>(child.GetPath()));
             }
         }
 
         /// <summary>
+        /// Helper function to build an error message. Prefixes the message with a human readable description of this
+        /// driver.
+        /// </summary>
+        protected string ErrorMessage(string message)
+        {
+            // if description is blank or empty, use the type name as description
+            var typeName = GetType().Name;
+            if (string.IsNullOrEmpty(Description))
+            {
+                return $"{typeName}: {message}";
+            }
+
+            return $"{typeName} [{Description}] {message}";
+        }
+
+
+        /// <summary>
         /// Returns the root node. Can be null in case the root
-        /// node is not currently present in the scene tree or invalid.
+        /// node is not currently present in the scene tree or if the root node is not a valid instance anymore.
         /// </summary>
         [CanBeNull]
         public T Root
         {
             get
             {
-                var node =  _producer();
-                return Object.IsInstanceValid(node) ? node : null;
+                var node = _producer();
+                return Object.IsInstanceValid(node) && node.IsInsideTree() ? node : null;
             }
         }
 
@@ -62,24 +101,18 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns the root node and ensures it is present.
         /// </summary>
-        public T PresentRoot {
+        public T PresentRoot
+        {
             get
             {
                 var result = Root;
-                if (result == null) {
-                    throw new InvalidOperationException("Node is not present in the scene tree.");
+                if (result == null)
+                {
+                    throw new InvalidOperationException(ErrorMessage("Node is not present in the scene tree."));
                 }
+
                 return result;
             }
-        }
-
-        /// <summary>
-        /// Creates a signal awaiter that waits for the given signal
-        /// of the root node.
-        /// </summary>
-        protected SignalAwaiter GetSignalAwaiter(string signalName)
-        {
-            return PresentRoot.ToSignal(Root, signalName);
         }
 
         /// <summary>
@@ -87,7 +120,7 @@ namespace GodotTestDriver.Drivers
         /// </summary>
         public bool IsSignalConnected(string signal, Object target, string method)
         {
-            return Root?.IsConnected(signal, target, method) ?? false;
+            return PresentRoot.IsConnected(signal, target, method);
         }
 
         /// <summary>
@@ -95,10 +128,7 @@ namespace GodotTestDriver.Drivers
         /// </summary>
         public bool IsSignalConnectedToAnywhere(string signal)
         {
-            return (Root?.GetSignalConnectionList(signal).Count ?? 0) > 0;
+            return PresentRoot.GetSignalConnectionList(signal).Count > 0;
         }
-        
-        
-        
     }
 }

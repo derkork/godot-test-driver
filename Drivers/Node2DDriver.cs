@@ -10,12 +10,12 @@ namespace GodotTestDriver.Drivers
     [PublicAPI]
     public class Node2DDriver<T> : CanvasItemDriver<T> where T : Node2D
     {
-        public Node2DDriver(Func<T> producer) : base(producer)
+        public Node2DDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
         
 
-        public Vector2 GlobalPosition => Root?.GlobalPosition ?? Vector2.Inf;
+        public Vector2 GlobalPosition => PresentRoot.GlobalPosition;
 
     }
 }

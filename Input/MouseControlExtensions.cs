@@ -20,14 +20,15 @@ namespace GodotTestDriver.Input
        
         public static async Task MoveMouseTo(this Viewport viewport, Vector2 position)
         {
-            var mousePosition = viewport.GetMousePosition();
+            await viewport.GetTree().ProcessFrame();
+            
             viewport.WarpMouse(position);
             var inputEvent = new InputEventMouseMotion();
             inputEvent.GlobalPosition = position;
             inputEvent.Position = position;
-            inputEvent.Relative = mousePosition - position;
             Godot.Input.ParseInputEvent(inputEvent);
-            await viewport.WaitUntilEventDone();
+            
+            await viewport.GetTree().WaitForEvents();
         }
 
         public static async Task DragMouse(this Viewport viewport, Vector2 start, Vector2 end, ButtonList button = ButtonList.Left)
@@ -38,49 +39,52 @@ namespace GodotTestDriver.Input
 
         public static async Task PressMouse(this Viewport viewport, ButtonList button = ButtonList.Left)
         {
+            await viewport.GetTree().ProcessFrame();
+           
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = true;
             Godot.Input.ParseInputEvent(action);
-            await viewport.WaitUntilEventDone();
+            
+            await viewport.GetTree().WaitForEvents();
         }
 
         public static async Task ReleaseMouse(this Viewport viewport, ButtonList button = ButtonList.Left)
         {
+            await viewport.GetTree().ProcessFrame();
+          
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = false;
             Godot.Input.ParseInputEvent(action);
-            await viewport.WaitUntilEventDone();
+            
+            await viewport.GetTree().WaitForEvents();
         }
 
         private static async Task PressMouseAt(this Viewport viewport, Vector2 position, ButtonList button = ButtonList.Left)
         {
             await MoveMouseTo(viewport, position);
+          
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = true;
             action.Position = position;
             Godot.Input.ParseInputEvent(action);
-            await viewport.WaitUntilEventDone();
+         
+            await viewport.GetTree().WaitForEvents();
         }
 
         private static async Task ReleaseMouseAt(this Viewport viewport, Vector2 position, ButtonList button = ButtonList.Left)
         {
             await MoveMouseTo(viewport, position);
+            
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = false;
             action.Position = position;
             Godot.Input.ParseInputEvent(action);
-            await viewport.WaitUntilEventDone();
-        }
-        
-        private static async Task WaitUntilEventDone(this Viewport viewport)
-        {
-            await viewport.NextFrame();
-            await viewport.NextFrame();
-        }
 
+            await viewport.GetTree().WaitForEvents();
+        }
     }
 }

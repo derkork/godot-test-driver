@@ -20,6 +20,7 @@ namespace GodotTestDriver.Util
             var timeout = new Timeout(seconds);
             do
             {
+                await tree.ProcessFrame();
                 try
                 {
                     action();
@@ -32,9 +33,6 @@ namespace GodotTestDriver.Util
                         throw;
                     }
                 }
-
-                // wait a frame
-                await tree.NextFrame();
             } while (true);
         }
 
@@ -60,13 +58,12 @@ namespace GodotTestDriver.Util
             var timeout = new Timeout(seconds);
             do
             {
+                await tree.ProcessFrame();
                 if (condition())
                 {
                     return;
                 }
 
-                // wait a frame
-                await tree.NextFrame();
             } while (!timeout.IsReached);
             
             throw new TimeoutException("Condition was not true within the given time.");
@@ -92,7 +89,7 @@ namespace GodotTestDriver.Util
             do
             {
                 action();
-                await tree.NextFrame();
+                await tree.ProcessFrame();
             } while (!timeout.IsReached);
         }
         
@@ -104,6 +101,44 @@ namespace GodotTestDriver.Util
         public static async Task DuringSeconds(this Node node, float seconds, Action action)
         {
             await node.GetTree().DuringSeconds(seconds, action);
+        }
+
+        /// <summary>
+        /// Waits for the events triggered by the most recent action to be processed.
+        /// </summary>
+        public static async Task WaitForEvents(this SceneTree tree)
+        {
+            await tree.ProcessFrame(2);
+        }
+
+        /// <summary>
+        /// Waits until the given amount of frames have passed. Returns in the context of the `Process` method
+        /// on the main thread.
+        /// </summary>
+        public static async Task ProcessFrame(this SceneTree tree, int frames = 1)
+        {
+            // add a temporary node to the tree and wait until it's process method is called.
+            var processWaiter = new ProcessWaiter();
+            processWaiter.CountDown = frames;
+            tree.Root.AddChild(processWaiter);
+
+            // node will destroy itself when it's process method is called.
+            await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnProcess));
+        }
+
+        /// <summary>
+        /// Waits until the given amount of physics frames have passed. Returns in the context of the `PhysicsProcess`
+        /// method on the main thread.
+        /// </summary>
+        public static async Task PhysicsProcessFrame(this SceneTree tree, int frames = 1)
+        {
+            // add a temporary node to the tree and wait until it's process method is called.
+            var processWaiter = new ProcessWaiter();
+            processWaiter.CountDown = frames;
+            tree.Root.AddChild(processWaiter);
+            
+            // node will destroy itself when it's PhysicsProcess method is called.
+            await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnPhysicsProcess));
         }
     }
 }

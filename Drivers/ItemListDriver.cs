@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
+using GodotTestDriver.Util;
 using JetBrains.Annotations;
 
 namespace GodotTestDriver.Drivers
@@ -9,10 +12,10 @@ namespace GodotTestDriver.Drivers
     /// Driver for an ItemList control.
     /// </summary>
     [PublicAPI]
-    public class ItemListDriver : ControlDriver<ItemList>
+    public class ItemListDriver<T> : ControlDriver<T> where T:ItemList
     {
         
-        public ItemListDriver(Func<ItemList> producer) : base(producer)
+        public ItemListDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
@@ -23,12 +26,7 @@ namespace GodotTestDriver.Drivers
         {
             get
             {
-                var uiControl = Root;
-                
-                if (uiControl == null)
-                {
-                    return new List<string>();
-                }
+                var uiControl = PresentRoot;
                 
                 var result = new List<string>();
                 for (var i = 0; i < uiControl.GetItemCount(); i++)
@@ -46,30 +44,75 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns true if something is selected.
         /// </summary>
-        public bool HasSelection => Root != null && Root.GetSelectedItems().Length > 0;
+        public bool HasSelection => PresentRoot.GetSelectedItems().Length > 0;
         
         
         /// <summary>
-        /// Selects an item with the given name.
+        /// Returns the currently selected items.
         /// </summary>
-        /// <param name="name"></param>
-        public void Select(string name)
+        public List<string> SelectedItems
+        {
+            get
+            {
+                var uiControl = PresentRoot;
+                return uiControl.GetSelectedItems()
+                    .Select(i => uiControl.GetItemText(i)).ToList();
+            }
+        }
+        
+        
+        /// <summary>
+        /// Returns the indices of the currently selected items.
+        /// </summary>
+        public List<int> SelectedIndices
+        {
+            get
+            {
+                var uiControl = PresentRoot;
+                return uiControl.GetSelectedItems().ToList();
+            }
+        }
+        
+
+        /// <summary>
+        /// Selects an item with the given text.
+        /// </summary>
+        public async Task SelectItemWithText(string text)
         {
             var uiControl = VisibleRoot;
+            await uiControl.GetTree().ProcessFrame();
+
             for (var i = 0; i < uiControl.GetItemCount(); i++)
             {
-                if (!uiControl.IsItemSelectable(i) || uiControl.GetItemText(i) != name)
+                if (uiControl.GetItemText(i) != text)
                 {
                     continue;
+                }
+                
+                if (!uiControl.IsItemSelectable(i))
+                {
+                    throw new InvalidOperationException(ErrorMessage($"Item with text '{text}' is not selectable."));
                 }
                 
                 uiControl.Select(i);
                 // calling this function will not emit the signal so we need to do this ourselves
                 uiControl.EmitSignal("item_selected", i);
+                await uiControl.GetTree().WaitForEvents();
                 return;
             }
             
-            throw new InvalidOperationException("List does not contain item with name " + name);
+            throw new InvalidOperationException(ErrorMessage($"List does not contain item with text '{text}'."));
+        }
+    }
+    
+    /// <summary>
+    /// Driver for an ItemList control.
+    /// </summary>
+    [PublicAPI]
+    public sealed class ItemListDriver : ItemListDriver<ItemList>
+    {
+        public ItemListDriver(Func<ItemList> producer, string description = "") : base(producer, description)
+        {
         }
     }
 }

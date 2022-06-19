@@ -9,18 +9,6 @@ namespace GodotTestDriver.Util
     /// </summary>
     internal static class InternalUtil
     {
-        [MustUseReturnValue]
-        public static SignalAwaiter NextFrame(this Node node)
-        {
-            return node.GetTree().NextFrame();
-        }
-        
-        [MustUseReturnValue]
-        public static SignalAwaiter NextFrame(this SceneTree tree)
-        {
-            return tree.ToSignal(tree,"idle_frame");
-        }
-
         public static Vector2 Center(this Rect2 rect2)
         {
             return rect2.Position + rect2.Size / 2;

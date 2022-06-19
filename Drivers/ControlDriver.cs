@@ -13,12 +13,12 @@ namespace GodotTestDriver.Drivers
     [PublicAPI]
     public class ControlDriver<T> : CanvasItemDriver<T> where T : Control
     {
-        public ControlDriver(Func<T> producer) : base(producer)
+        public ControlDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
         /// <summary>
-        /// Returns true if the control is visible and fully inside the viewport rect.
+        /// Returns true if the Node is visible and fully inside the viewport rect.
         /// </summary>
         public bool IsFullyInView
         {
@@ -63,8 +63,9 @@ namespace GodotTestDriver.Drivers
         public async Task ReleaseFocus()
         {
             var control = VisibleRoot;
+            await control.GetTree().ProcessFrame();
             control.ReleaseFocus();
-            await control.NextFrame();
+            await control.GetTree().WaitForEvents();
         }
 
         /// <summary>
@@ -73,8 +74,9 @@ namespace GodotTestDriver.Drivers
         public async Task GrabFocus()
         {
             var control = VisibleRoot;
+            await control.GetTree().ProcessFrame();
             control.GrabFocus();
-            await control.NextFrame();
+            await control.GetTree().WaitForEvents();
         }
     }
 }

@@ -8,12 +8,20 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="Label"/> control.
     /// </summary>
     [PublicAPI]
-    public class LabelDriver : ControlDriver<Label>
+    public class LabelDriver<T> : ControlDriver<T> where T:Label
     {
-        public LabelDriver(Func<Label> producer) : base(producer)
+        public LabelDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
-        public string Text => Root?.Text;
+        public string Text => PresentRoot.Text;
+    }
+    
+    [PublicAPI]
+    public sealed class LabelDriver : LabelDriver<Label>
+    {
+        public LabelDriver(Func<Label> producer, string description = "") : base(producer, description)
+        {
+        }
     }
 }

@@ -33,9 +33,11 @@ namespace GodotTestDriver
         /// </summary>
         public async Task<T> AddToRoot<T>(T node) where T :Node
         {
-            await Tree.NextFrame();
+            await Tree.ProcessFrame();
+            
             Tree.Root.AddChild(node);
-            await Tree.NextFrame(); // make sure _Ready is called.
+            
+            await Tree.WaitForEvents(); // make sure _Ready is called.
             return node;
         }
 
@@ -46,7 +48,7 @@ namespace GodotTestDriver
         /// </summary>
         public async Task<T> LoadAndAddScene<T>(string path) where T : Node
         {
-            var instance = LoadScene<T>(path);
+            var instance = await LoadScene<T>(path);
             var result =  await AddToRoot(instance);
             Tree.CurrentScene = instance;
             return result;
@@ -57,8 +59,10 @@ namespace GodotTestDriver
         /// Loads a scene from the given path and instantiates it. The instance will be scheduled for automatic cleanup
         /// when this fixture is cleaned up.
         /// </summary>
-        public T LoadScene<T>(string path) where T : Node
+        public async Task<T> LoadScene<T>(string path) where T : Node
         {
+            // make sure we run in the main thread
+            await Tree.ProcessFrame();
             return AutoFree(GD.Load<PackedScene>(path).Instance<T>());
         }
         
@@ -95,7 +99,8 @@ namespace GodotTestDriver
         public async Task Cleanup()
         {
             // ensure we run on the main thread.
-            await Tree.NextFrame();
+            await Tree.ProcessFrame();
+            
             if (_cleanupSteps.Count > 0)
             {
                 // run cleanup in reverse order, so inner cleanup is done first.

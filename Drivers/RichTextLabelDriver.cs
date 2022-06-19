@@ -8,13 +8,21 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="RichTextLabel"/> control.
     /// </summary>
     [PublicAPI]
-    public class RichTextLabelDriver : ControlDriver<RichTextLabel>
+    public class RichTextLabelDriver<T> : ControlDriver<T> where T:RichTextLabel
     {
-        public RichTextLabelDriver(Func<RichTextLabel> producer) : base(producer)
+        public RichTextLabelDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
-        public string Text => Root?.Text;
-        public string BbCodeText => Root?.BbcodeText;
+        public string Text => PresentRoot.Text;
+        public string BbCodeText => PresentRoot.BbcodeText;
+    }
+    
+    [PublicAPI]
+    public sealed class RichTextLabelDriver : RichTextLabelDriver<RichTextLabel>
+    {
+        public RichTextLabelDriver(Func<RichTextLabel> producer, string description = "") : base(producer, description)
+        {
+        }
     }
 }

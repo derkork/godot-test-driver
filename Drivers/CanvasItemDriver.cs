@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using Godot;
 using JetBrains.Annotations;
-using Object = Godot.Object;
 
 namespace GodotTestDriver.Drivers
 {
@@ -12,21 +10,14 @@ namespace GodotTestDriver.Drivers
     [PublicAPI]
     public class CanvasItemDriver<T> : NodeDriver<T> where T : CanvasItem
     {
-        public CanvasItemDriver(Func<T> producer) : base(producer)
+        public CanvasItemDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
         /// <summary>
         /// Is the CanvasItem currently visible?
         /// </summary>
-        public bool IsVisible
-        {
-            get
-            {
-                var node = Root;
-                return node?.IsVisibleInTree() ?? false;
-            }
-        }
+        public bool IsVisible => PresentRoot.IsVisibleInTree();
 
         /// <summary>
         /// The viewport that this canvas item is rendering to.
@@ -40,10 +31,10 @@ namespace GodotTestDriver.Drivers
         {
             get
             {
-                var root = Root;
-                if (root == null || !root.IsVisibleInTree())
+                var root = PresentRoot;
+                if (!root.IsVisibleInTree())
                 {
-                    throw new InvalidOperationException("Cannot interact with CanvasItem because it is not visible.");
+                    throw new InvalidOperationException(ErrorMessage("Cannot interact with CanvasItem because it is not visible."));
                 }
                 return root;
             }

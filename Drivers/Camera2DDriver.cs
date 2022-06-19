@@ -10,9 +10,9 @@ namespace GodotTestDriver.Drivers
     /// Driver for the Camera2D node.
     /// </summary>
     [PublicAPI]
-    public class Camera2DDriver : NodeDriver<Camera2D>
+    public class Camera2DDriver<T> : Node2DDriver<T> where T:Camera2D
     {
-        public Camera2DDriver(Func<Camera2D> producer) : base(producer)
+        public Camera2DDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
 
@@ -50,10 +50,18 @@ namespace GodotTestDriver.Drivers
                 }
 
                 screenPos = newScreenPos;
-                await PresentRoot.NextFrame();
+                await PresentRoot.GetTree().ProcessFrame();
             } while (!timeout.IsReached);
 
             return false;
+        }
+    }
+    
+    [PublicAPI]
+    public sealed class Camera2DDriver : Camera2DDriver<Camera2D>
+    {
+        public Camera2DDriver(Func<Camera2D> producer, string description = "") : base(producer, description)
+        {
         }
     }
 }

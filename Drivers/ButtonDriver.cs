@@ -1,45 +1,25 @@
-﻿using System;
-using System.Threading.Tasks;
+using System;
 using Godot;
 using JetBrains.Annotations;
 
 namespace GodotTestDriver.Drivers
 {
     /// <summary>
-    /// Driver for a UI button.
+    /// Driver for <see cref="Button"/> controls.
     /// </summary>
     [PublicAPI]
-    public class ButtonDriver : ControlDriver<Button>
+    public class ButtonDriver<T> : BaseButtonDriver<T> where T:Button
     {
-        public ButtonDriver(Func<Button> producer) : base(producer)
+        public ButtonDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
-
-        public bool Disabled => Root is {Disabled: true};
-        public bool Enabled => Root is {Disabled: false};
-
-        /// <summary>
-        ///  Simulates a button press by simply sending the press event.
-        /// </summary>
-        public void Press()
+    }
+    
+    [PublicAPI]
+    public sealed class ButtonDriver : ButtonDriver<Button>
+    {
+        public ButtonDriver(Func<Button> producer, string description = "") : base(producer, description)
         {
-            var button = VisibleRoot;
-            if (button.Disabled)
-            {
-                throw new InvalidOperationException("Button is disabled and cannot be pressed.");
-            }
-
-            button.EmitSignal("pressed");
-        }
-
-        public override async Task ClickCenter(ButtonList button = ButtonList.Left)
-        {
-            if (Disabled)
-            {
-                throw new InvalidOperationException("Button is disabled and cannot be pressed.");
-            }
-
-            await base.ClickCenter(button);
         }
     }
 }
