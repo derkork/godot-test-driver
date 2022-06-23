@@ -11,31 +11,44 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="OptionButton"/> controls.
     /// </summary>
     [PublicAPI]
-    public class OptionButtonDriver<T> : BaseButtonDriver<T> where T:OptionButton
+    public class OptionButtonDriver<T> : BaseButtonDriver<T> where T : OptionButton
     {
         public OptionButtonDriver(Func<T> producer, string description = "") : base(producer, description)
         {
         }
-        
+
+
         /// <summary>
-        /// Returns a list of all items in the list that are currently selectable (e.g. not disabled).
+        /// Returns a list of all items in the option button.
         /// </summary>
-        public List<string> SelectableItems
+        public IEnumerable<string> Items
         {
             get
             {
                 var uiControl = PresentRoot;
-                
-                var result = new List<string>();
+                for (var i = 0; i < uiControl.GetItemCount(); i++)
+                {
+                    yield return uiControl.GetItemText(i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all items in the option button that are currently selectable (e.g. not disabled).
+        /// </summary>
+        public IEnumerable<string> SelectableItems
+        {
+            get
+            {
+                var uiControl = PresentRoot;
+
                 for (var i = 0; i < uiControl.GetItemCount(); i++)
                 {
                     if (!uiControl.IsItemDisabled(i))
                     {
-                        result.Add(uiControl.GetItemText(i));
+                        yield return uiControl.GetItemText(i);
                     }
                 }
-
-                return result;
             }
         }
 
@@ -50,18 +63,18 @@ namespace GodotTestDriver.Drivers
                 return uiControl.Selected < 0 ? null : uiControl.GetItemText(uiControl.Selected);
             }
         }
-        
+
         /// <summary>
         /// Returns the currently selected item index, or -1 if no item is selected.
         /// </summary>
         public int SelectedIndex => PresentRoot.Selected;
-        
+
         /// <summary>
         /// Returns the currently selected item ID, or -1 if no item is selected.
         /// </summary>
         public int SelectedId => PresentRoot.Selected < 0 ? -1 : PresentRoot.GetItemId(PresentRoot.Selected);
-        
-        
+
+
         /// <summary>
         /// Selects an item with the given text.
         /// </summary>
@@ -69,27 +82,28 @@ namespace GodotTestDriver.Drivers
         {
             var uiControl = VisibleRoot;
             await uiControl.GetTree().ProcessFrame();
-            
+
             for (var i = 0; i < uiControl.GetItemCount(); i++)
             {
                 if (uiControl.GetItemText(i) != text)
                 {
                     continue;
                 }
-                
+
                 if (uiControl.IsItemDisabled(i))
                 {
                     throw new InvalidOperationException(ErrorMessage($"Item with text '{text}' is not selectable."));
                 }
-                
+
                 uiControl.Select(i);
                 // calling this function will not emit the signal so we need to do this ourselves
                 uiControl.EmitSignal("item_selected", i);
                 await uiControl.GetTree().WaitForEvents();
                 return;
             }
-            
-            throw new InvalidOperationException(ErrorMessage($"Option button does not contain item with name '{text}'."));
+
+            throw new InvalidOperationException(
+                ErrorMessage($"Option button does not contain item with name '{text}'."));
         }
 
         /// <summary>
@@ -99,7 +113,7 @@ namespace GodotTestDriver.Drivers
         {
             var uiControl = VisibleRoot;
             await uiControl.GetTree().ProcessFrame();
-            
+
             for (var i = 0; i < uiControl.GetItemCount(); i++)
             {
                 if (uiControl.GetItemId(i) != id)
@@ -122,8 +136,8 @@ namespace GodotTestDriver.Drivers
             throw new InvalidOperationException(ErrorMessage($"Option button does not contain item with ID '{id}'."));
         }
     }
-    
-    
+
+
     [PublicAPI]
     public sealed class OptionButtonDriver : OptionButtonDriver<OptionButton>
     {

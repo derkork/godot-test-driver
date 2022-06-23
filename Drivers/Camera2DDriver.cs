@@ -16,6 +16,10 @@ namespace GodotTestDriver.Drivers
         {
         }
 
+        /// <summary>
+        /// Moves the given position into the view of the camera. This will wait for the given amount of seconds
+        /// until the camera no longer moves.
+        /// </summary>
         public async Task<bool> MoveIntoView(Vector2 worldPosition, float timeoutSeconds)
         {
             PresentRoot.GlobalPosition = worldPosition;
@@ -56,7 +60,10 @@ namespace GodotTestDriver.Drivers
             return false;
         }
     }
-    
+   
+    /// <summary>
+    /// Driver for the Camera2D node.
+    /// </summary>
     [PublicAPI]
     public sealed class Camera2DDriver : Camera2DDriver<Camera2D>
     {

@@ -14,6 +14,9 @@ namespace GodotTestDriver.Drivers
         {
         }
 
+        /// <summary>
+        /// The current text of the label.
+        /// </summary>
         public string Text => PresentRoot.Text;
     }
     

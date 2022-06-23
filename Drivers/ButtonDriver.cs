@@ -15,6 +15,9 @@ namespace GodotTestDriver.Drivers
         }
     }
     
+    /// <summary>
+    /// Driver for <see cref="Button"/> controls.
+    /// </summary>
     [PublicAPI]
     public sealed class ButtonDriver : ButtonDriver<Button>
     {

@@ -13,10 +13,6 @@ namespace GodotTestDriver.Drivers
     /// </summary>
     public abstract class NodeDriver
     {
-        /// <summary>
-        /// The root node that the test driver is working on.
-        /// </summary>
-        public abstract Node RootNode { get; }
     }
 
     /// <summary>
@@ -95,8 +91,6 @@ namespace GodotTestDriver.Drivers
                 return Object.IsInstanceValid(node) && node.IsInsideTree() ? node : null;
             }
         }
-
-        public override Node RootNode => Root;
 
         /// <summary>
         /// Returns the root node and ensures it is present.

@@ -16,11 +16,19 @@ namespace GodotTestDriver.Drivers
         {
         }
 
-
+        /// <summary>
+        /// The current text of the line edit.
+        /// </summary>
         public string Text => PresentRoot.Text;
+
+        /// <summary>
+        /// Whether the line edit is currently editable.
+        /// </summary>
         public bool Editable => PresentRoot.Editable;
         
-        
+        /// <summary>
+        /// Types the given text into the line edit. Existing text will be overwritten.
+        /// </summary>
         public async Task Type(string text)
         {
             if (!Editable)
@@ -36,7 +44,10 @@ namespace GodotTestDriver.Drivers
             await edit.GetTree().WaitForEvents();
         }
 
-        
+
+        /// <summary>
+        /// Types the given text into the line edit. Existing text will be overwritten. Presses "enter" afterwards.
+        /// </summary>
         public async Task Enter(string text)
         {
             if (!Editable)
@@ -54,7 +65,9 @@ namespace GodotTestDriver.Drivers
         
     }
     
-    
+    /// <summary>
+    /// Driver for the <see cref="LineEdit"/> control.
+    /// </summary>
     [PublicAPI]
     public sealed class LineEditDriver : LineEditDriver<LineEdit>
     {

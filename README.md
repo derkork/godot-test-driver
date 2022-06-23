@@ -209,20 +209,134 @@ Note that because of the way drivers are implemented `dialogDriver.YesButton` wi
 - [ButtonDriver](Drivers/ButtonDriver.cs) - a driver for buttons
 - [Camera2DDriver](Drivers/Camera2DDriver.cs) - a driver for 2D cameras
 - [CanvasItemDriver](Drivers/CanvasItemDriver.cs) - a driver for canvas items
-- [ControlDriver](Drivers/ControlDriver.cs) - the root driver class for drivers working on controls
+- [CheckBoxDriver](Drivers/CheckBoxDriver.cs) - a driver for check boxes
+- [ControlDriver](Drivers/ControlDriver.cs) - the root driver class for drivers working on controls, can be used for any control
 - [ItemListDriver](Drivers/ItemListDriver.cs) - a driver for item lists
 - [LabelDriver](Drivers/LabelDriver.cs) - a driver for labels
 - [LineEditDriver](Drivers/LineEditDriver.cs) - a driver for line edits
 - [Node2DDriver](Drivers/Node2DDriver.cs) - a driver for 2D nodes
 - [NodeDriver](Drivers/NodeDriver.cs) - the root driver class.
 - [OptionButtonDriver](Drivers/OptionButtonDriver.cs) - a driver for option buttons
+- [PopupMenuDriver](Drivers/PopupMenuDriver.cs) - a driver for popup menus
 - [RichTextLabelDriver](Drivers/RichTextLabelDriver.cs) - a driver for rich text labels
+- [TextEditDriver](Drivers/TextEditDriver.cs) - a driver for text edits
 - [TweenDriver](Drivers/TweenDriver.cs) - a driver for tweens
+
+## Input
+### Simulating mouse input
+GodotTest provides a number of extension functions on `Viewport` that allow you to simulate mouse input in a viewport. 
+
+```csharp
+
+// you can move the mouse to a certain position (e.g. for simulating a hover)
+await viewport.MoveMouseTo(new Vector2(100, 100));
+
+// you can click at a certain position (default is left mouse button)
+await viewport.ClickMouseAt(new Vector2(100, 100));
+
+// you can give a ButtonList argument to click with a different mouse button
+await viewport.ClickMouseAt(new Vector2(100, 100), ButtonList.Right);
+
+// you can also send single mouse presses and releases
+await viewport.PressMouse();
+await viewport.ReleaseMouse();
+
+// there is also built-in support for mouse dragging
+// this will press the mouse at the first point, then move it to the 
+// second point and release it there.
+await viewport.DragMouse(new Vector2(100, 100), new Vector2(400, 400));
+
+// again you can give a ButtonList argument to drag with a different mouse button
+await viewport.DragMouse(new Vector2(100, 100), new Vector2(400, 400), ButtonList.Right);
+```
+
+All functions will wait until the events have been properly processed.
+
+### Simulating keyboard input
+GodotTest provides a number of extension functions on `SceneTree`/`Node` that allow you to simulate keyboard input.
+
+    
+```csharp
+
+// you can press down a key
+await node.PressKey(KeyList.A);
+// you can also specify modifiers (e.g. shift+F1)
+await node.PressKey(KeyList.F1, shift: true);
+// you can also specify multiple modifiers (e.g. ctrl+shift+F1)
+await node.PressKey(KeyList.F1, control: true, shift: true);
+
+// you can release a key
+await node.ReleaseKey(KeyList.A);
+
+// you can also combine pressing and releasing a key
+await node.TypeKey(KeyList.A);
+```
+
+All functions will wait until the events have been properly processed.
 
 ## Waiting extensions
 
 GodotTestDriver provides a number of extension functions on `SceneTree` which allow you to wait for certain events to happen. This is a common requirement in integration tests, where you will click or send some key strokes and then some action happens that takes a while to process.
 
+```csharp
+
+Fixture fixture;
+// this is a custom driver for the game under test
+ArenaDriver arena;
+
+public async Task Setup() {
+    fixture = new Fixture(GetTree());
+    // add the arena to the scene
+    var arenaInstance = fixture.LoadAndAddScene("res://arena.tscn");
+    arena = new ArenaDriver(() => arenaInstance);
+
+    // load a monster and put it into the arena
+    var monster = fixture.LoadScene<Monster>("res://monster.tscn");
+    arena.AddMonster(monster);
+
+    // load a player and put it into the arena
+    var player = fixture.LoadScene<Player>("res://player.tscn");
+    arena.AddPlayer(player);
+}
+
+// you can wait for a certain amount of time for a condition
+// to become true
+public async Task TestCombat() {
+    // when
+    // i open the arena gates
+    arena.OpenGates();
+
+    // then
+    // within 5 seconds the player should be dead because
+    // the monster will attack the player.
+    await GetTree().WithinSeconds(5, () => {
+        // this assertion will be repeatedly run every frame
+        // until it either succeeds or the 5 seconds have elapsed  
+        Assert.True(arena.Player.IsDead);
+    });
+}
+
+// you can also check for a condition to stay true for a 
+// certain amount of time
+public async Task TestGodMode() {
+    // setup
+    // give god mode to the player
+    arena.Player.EnableGodMode();    
+
+    // when
+    // i open the arena gates
+    arena.OpenGates();
+
+    // then
+    // the player will not lose any health within the next 5 seconds 
+    await GetTree().DuringSeconds(5, () => {
+        // this assertion will be repeatedly run every frame
+        // until it either fails or the 5 seconds have elapsed  
+        Assert.Equal(arenaDriver.Player.MaxHealth, arenaDriver.Player.Health);
+    });
+}
+
+```
 
 
 
@@ -235,4 +349,5 @@ Integration tests in games usually trigger some operation and then need to wait 
 - All calls should succeed if the controlled object is in a suitable state to perform the requested operation. Otherwise these calls will throw an `InvalidOperationException`. For example if you use a `ButtonDriver` and the button is not currently visible when you try to click it, the driver will throw an `InvalidOperationException`.
 - All calls that potentially modify state should always be executed in the `Process` phase. You can use the `await GetTree().ProcessFrame()` extension function that is provided by this library to wait for the process phase.
 - All calls that raise events should wait for at least two process frames before they return. This is to ensure that the event has been properly processed before the call returns. This way you don't need to litter your tests with code that waits for a few frames. You can use the `await GetTree().WaitForEvents()` extension function that is provided by this library to wait for the events to be processed.
+- Producer functions should never throw an exception. If they cannot find the node, they should just return `null`.
 

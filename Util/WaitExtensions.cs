@@ -110,6 +110,20 @@ namespace GodotTestDriver.Util
         {
             await tree.ProcessFrame(2);
         }
+        
+        
+        /// <summary>
+        /// Waits for the events triggered by the most recent action to be processed.
+        /// </summary>
+        public static async Task WaitForEvents(this Node node)
+        {
+            if (!node.IsInsideTree())
+            {
+                throw new InvalidOperationException("Node is not inside a tree.");
+            }
+            await node.GetTree().WaitForEvents();
+        }
+        
 
         /// <summary>
         /// Waits until the given amount of frames have passed. Returns in the context of the `Process` method
@@ -126,6 +140,21 @@ namespace GodotTestDriver.Util
             await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnProcess));
         }
 
+
+        /// <summary>
+        /// Waits until the given amount of frames have passed. Returns in the context of the `Process` method
+        /// on the main thread.
+        /// </summary>
+        public static async Task ProcessFrame(this Node node, int frames = 1)
+        {
+            if (!node.IsInsideTree())
+            {
+                throw new InvalidOperationException("Node is not inside a tree.");
+            }
+
+            await node.GetTree().ProcessFrame(frames);
+        }
+
         /// <summary>
         /// Waits until the given amount of physics frames have passed. Returns in the context of the `PhysicsProcess`
         /// method on the main thread.
@@ -139,6 +168,19 @@ namespace GodotTestDriver.Util
             
             // node will destroy itself when it's PhysicsProcess method is called.
             await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnPhysicsProcess));
+        }
+
+        /// <summary>
+        /// Waits until the given amount of physics frames have passed. Returns in the context of the `PhysicsProcess`
+        /// method on the main thread.
+        /// </summary>
+        public static async Task PhysicsProcessFrame(this Node node, int frames = 1)
+        {
+            if (!node.IsInsideTree())
+            {
+                throw new InvalidOperationException("Node is not inside a tree.");
+            }
+            await node.GetTree().PhysicsProcessFrame(frames);
         }
     }
 }

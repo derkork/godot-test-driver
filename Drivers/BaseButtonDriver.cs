@@ -16,8 +16,20 @@ namespace GodotTestDriver.Drivers
         {
         }
 
+        /// <summary>
+        /// Whether the button is currently disabled.
+        /// </summary>
         public bool Disabled => PresentRoot.Disabled;
+        
+        /// <summary>
+        /// Whether the button is currently enabled. Inversed from <see cref="Disabled"/>.
+        /// </summary>
         public bool Enabled => !Disabled;
+        
+        /// <summary>
+        /// Whether the button is currently pressed.
+        /// </summary>
+        public bool Pressed => PresentRoot.Pressed;
 
         /// <summary>
         ///  Simulates a button press by simply sending the press event.

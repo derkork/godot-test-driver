@@ -49,12 +49,11 @@ namespace GodotTestDriver.Drivers
         /// Moves the mouse to the center of the control and hovers for the given amount
         /// of seconds.
         /// </summary>
-        /// <param name="seconds"></param>
         public async Task Hover(float seconds)
         {
             var control = VisibleRoot;
             await control.GetViewport().MoveMouseTo(control.GetGlobalRect().Center());
-            await control.Sleep(seconds);
+            await control.SleepSeconds(seconds);
         }
 
         /// <summary>

@@ -14,9 +14,15 @@ namespace GodotTestDriver.Drivers
         {
         }
 
+        /// <summary>
+        /// Whether the tween is currently playing animations.
+        /// </summary>
         public bool IsRunningAnimations => PresentRoot.IsActive();
     }
 
+    /// <summary>
+    /// Driver for <see cref="Tween"/> nodes.
+    /// </summary>
     [PublicAPI]
     public sealed class TweenDriver : TweenDriver<Tween>
     {

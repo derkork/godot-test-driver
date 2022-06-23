@@ -15,7 +15,7 @@ namespace GodotTestDriver.Util
         }
         
         [MustUseReturnValue]
-        public static SignalAwaiter Sleep(this Node source, float sleepTime)
+        public static SignalAwaiter SleepSeconds(this Node source, float sleepTime)
         {
             return source.ToSignal(source.GetTree().CreateTimer(sleepTime), "timeout");
         }

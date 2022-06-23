@@ -15,7 +15,15 @@ namespace GodotTestDriver.Drivers
         }
         
 
+        /// <summary>
+        /// The global position of the node.
+        /// </summary>
         public Vector2 GlobalPosition => PresentRoot.GlobalPosition;
-
+        
+        /// <summary>
+        /// The position of the node relative to its parent.
+        /// </summary>
+        public Vector2 Position => PresentRoot.Position;
     }
+    
 }

@@ -14,10 +14,20 @@ namespace GodotTestDriver.Drivers
         {
         }
 
+        /// <summary>
+        /// The current text of the label.
+        /// </summary>
         public string Text => PresentRoot.Text;
+        
+        /// <summary>
+        /// The current bbcode text of the label.
+        /// </summary>
         public string BbCodeText => PresentRoot.BbcodeText;
     }
-    
+ 
+    /// <summary>
+    /// Driver for the <see cref="RichTextLabel"/> control.
+    /// </summary>
     [PublicAPI]
     public sealed class RichTextLabelDriver : RichTextLabelDriver<RichTextLabel>
     {

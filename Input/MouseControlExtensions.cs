@@ -20,7 +20,7 @@ namespace GodotTestDriver.Input
        
         public static async Task MoveMouseTo(this Viewport viewport, Vector2 position)
         {
-            await viewport.GetTree().ProcessFrame();
+            await viewport.ProcessFrame();
             
             viewport.WarpMouse(position);
             var inputEvent = new InputEventMouseMotion();
@@ -28,7 +28,7 @@ namespace GodotTestDriver.Input
             inputEvent.Position = position;
             Godot.Input.ParseInputEvent(inputEvent);
             
-            await viewport.GetTree().WaitForEvents();
+            await viewport.WaitForEvents();
         }
 
         public static async Task DragMouse(this Viewport viewport, Vector2 start, Vector2 end, ButtonList button = ButtonList.Left)
@@ -39,26 +39,26 @@ namespace GodotTestDriver.Input
 
         public static async Task PressMouse(this Viewport viewport, ButtonList button = ButtonList.Left)
         {
-            await viewport.GetTree().ProcessFrame();
+            await viewport.ProcessFrame();
            
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = true;
             Godot.Input.ParseInputEvent(action);
             
-            await viewport.GetTree().WaitForEvents();
+            await viewport.WaitForEvents();
         }
 
         public static async Task ReleaseMouse(this Viewport viewport, ButtonList button = ButtonList.Left)
         {
-            await viewport.GetTree().ProcessFrame();
+            await viewport.ProcessFrame();
           
             var action = new InputEventMouseButton();
             action.ButtonIndex = (int) button;
             action.Pressed = false;
             Godot.Input.ParseInputEvent(action);
             
-            await viewport.GetTree().WaitForEvents();
+            await viewport.WaitForEvents();
         }
 
         private static async Task PressMouseAt(this Viewport viewport, Vector2 position, ButtonList button = ButtonList.Left)
@@ -71,7 +71,7 @@ namespace GodotTestDriver.Input
             action.Position = position;
             Godot.Input.ParseInputEvent(action);
          
-            await viewport.GetTree().WaitForEvents();
+            await viewport.WaitForEvents();
         }
 
         private static async Task ReleaseMouseAt(this Viewport viewport, Vector2 position, ButtonList button = ButtonList.Left)
@@ -84,7 +84,7 @@ namespace GodotTestDriver.Input
             action.Position = position;
             Godot.Input.ParseInputEvent(action);
 
-            await viewport.GetTree().WaitForEvents();
+            await viewport.WaitForEvents();
         }
     }
 }
