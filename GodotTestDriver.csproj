@@ -10,7 +10,7 @@
     <PackageReleaseNotes>This is an early version. While it is working API may change. </PackageReleaseNotes>
     <Copyright>(C) 2022 Jan Thomä</Copyright>
     <PackageProjectUrl>https://github.com/derkork/godot-test-driver</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/derkork/godot-test-driver/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/derkork/godot-test-driver</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -20,5 +20,6 @@
   <ItemGroup>
     <Content Include="CHANGES.md" />
     <Content Include="README.md" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
