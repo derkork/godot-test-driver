@@ -11,6 +11,17 @@ jobs:
     container: barichello/godot-ci:mono-3.4.2
     steps:
       - uses: actions/checkout@v2
+      # Workaround for https://github.com/abarichello/godot-ci/issues/80
+      - name: Install dotnet tools
+        run: |       
+          sudo apt-get install -y dotnet-sdk-2.2.100-preview1-003121
+          wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+          dpkg -i packages-microsoft-prod.deb
+          rm packages-microsoft-prod.deb
+          apt-get update -qq
+          apt-get install -y apt-transport-https
+          apt-get update -qq
+          apt-get install -y dotnet-sdk-6.0
       - name: Install Dependencies
         run: |
           nuget restore
