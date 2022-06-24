@@ -1,7 +1,5 @@
 # Godot Test Driver
 
-**Important Note: This is currently in development. The API is not yet stable.**
-
 ### What is it?
 This library provides an API that simplifies writing integration tests for Godot projects. It provides:
 - A very simple and minimal framework for interacting with Godot nodes from integration tests. With it, you can effectively decouple your integration tests from the implementation details of your Godot project.
@@ -15,6 +13,14 @@ GodotTestDriver is not a test framework. There are already a lot of godot test f
 GodotTestDriver is also not an assertions library. Most test frameworks come with built-in assertions, so you can just use these together 
 
 ## How to use GodotTestDriver
+### Installation
+
+GodotTestDriver is published on [NuGet](https://www.nuget.org/packages/GodotTestDriver). To add it use this command line command (or the NuGet facilities of your IDE):
+
+```bash
+dotnet add package GodotTestDriver --version 0.0.30
+```
+
 ### Fixtures
 
 This library provides a `Fixture` class which you can use to create and automatically dispose of Godot nodes and scenes. The fixture ensures that all tree modifications run on the main thread. 
@@ -211,6 +217,8 @@ Note that because of the way drivers are implemented `dialogDriver.YesButton` wi
 - [CanvasItemDriver](Drivers/CanvasItemDriver.cs) - a driver for canvas items
 - [CheckBoxDriver](Drivers/CheckBoxDriver.cs) - a driver for check boxes
 - [ControlDriver](Drivers/ControlDriver.cs) - the root driver class for drivers working on controls, can be used for any control
+- [GraphEditDriver](Drivers/GraphEditDriver.cs) - a driver for graph editors
+- [GraphNodeDriver](Drivers/GraphNodeDriver.cs) - a driver for graph nodes
 - [ItemListDriver](Drivers/ItemListDriver.cs) - a driver for item lists
 - [LabelDriver](Drivers/LabelDriver.cs) - a driver for labels
 - [LineEditDriver](Drivers/LineEditDriver.cs) - a driver for line edits
@@ -338,15 +346,13 @@ public async Task TestGodMode() {
 
 ```
 
-
-
 ## FAQ
 ### Why is everything `async`?
 
 Integration tests in games usually trigger some operation and then need to wait for the operation to have effect. This waiting can last several frames. Using `async` / `await` makes it much easier to write such tests.
 
 ### What should I consider when writing my own drivers?
-- All calls should succeed if the controlled object is in a suitable state to perform the requested operation. Otherwise these calls will throw an `InvalidOperationException`. For example if you use a `ButtonDriver` and the button is not currently visible when you try to click it, the driver will throw an `InvalidOperationException`.
+- All calls should succeed if the controlled object is in a suitable state to perform the requested operation. Otherwise these calls should throw an `InvalidOperationException`. For example if you use a `ButtonDriver` and the button is not currently visible when you try to click it, the driver will throw an `InvalidOperationException`.
 - All calls that potentially modify state should always be executed in the `Process` phase. You can use the `await GetTree().ProcessFrame()` extension function that is provided by this library to wait for the process phase.
 - All calls that raise events should wait for at least two process frames before they return. This is to ensure that the event has been properly processed before the call returns. This way you don't need to litter your tests with code that waits for a few frames. You can use the `await GetTree().WaitForEvents()` extension function that is provided by this library to wait for the events to be processed.
 - Producer functions should never throw an exception. If they cannot find the node, they should just return `null`.
