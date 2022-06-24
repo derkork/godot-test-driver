@@ -1,7 +1,9 @@
 name: main
 
-on: [push, pull_request]
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   Build:
     name: Build
@@ -14,5 +16,10 @@ jobs:
           nuget restore
           mkdir -p .mono/assemblies/Debug
           cp /usr/local/bin/GodotSharp/Api/Release/* .mono/assemblies/Debug
-      - name: Compile
-        run: msbuild
+
+      - name: publish on version change
+        id: publish_nuget
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+            # Filepath of the project to be packaged, relative to root of repository
+            PROJECT_FILE_PATH: GodotTestDriver.csproj
