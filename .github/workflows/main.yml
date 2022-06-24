@@ -28,7 +28,8 @@ jobs:
           cp /usr/local/bin/GodotSharp/Api/Release/* .mono/assemblies/Debug
       - name: publish on version change
         id: publish_nuget
-        uses: alirezanet/publish-nuget@v3.0.0
+        # workaround for https://github.com/brandedoutcast/publish-nuget/issues/76
+        uses: alirezanet/publish-nuget@v3.0.4
         with:
             # Filepath of the project to be packaged, relative to root of repository
             PROJECT_FILE_PATH: GodotTestDriver.csproj
