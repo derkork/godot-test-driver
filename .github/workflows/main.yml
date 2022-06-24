@@ -16,7 +16,11 @@ jobs:
           nuget restore
           mkdir -p .mono/assemblies/Debug
           cp /usr/local/bin/GodotSharp/Api/Release/* .mono/assemblies/Debug
-
+      - name: Check build
+        run: |
+          dotnet build -c Release GodotTestDriver.csproj 
+          dotnet pack  --no-build -c Release GodotTestDriver.csproj -o .
+          ls -la
       - name: publish on version change
         id: publish_nuget
         uses: brandedoutcast/publish-nuget@v2.5.5
