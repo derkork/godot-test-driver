@@ -24,3 +24,4 @@ jobs:
             # Filepath of the project to be packaged, relative to root of repository
             PROJECT_FILE_PATH: GodotTestDriver.csproj
             VERSION_REGEX: ^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$
+            NUGET_KEY: ${{ secrets.NUGET_KEY }}
