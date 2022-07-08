@@ -8,9 +8,9 @@ This library provides an API that simplifies writing integration tests for Godot
 - A fixture implementation for setting up test fixtures and destroying them properly after the test.
 
 ### What is it not?
-GodotTestDriver is not a test framework. There are already a lot of godot test frameworks out there (e.g GodotXUnit, WAT, GDUnit3) so there is no need add another one to the list. Pick one and use GodotTestDriver together with it.
+GodotTestDriver is not a test framework. There are already a lot of godot test frameworks out there (e.g GodotXUnit, WAT, GDUnit3) so there is no need add another one to the list. Pick one and use GodotTestDriver on top of it.
 
-GodotTestDriver is also not an assertions library. Most test frameworks come with built-in assertions, so you can just use these together 
+GodotTestDriver is also not an assertions library. Most test frameworks come with built-in assertions, so just use these. 
 
 ## How to use GodotTestDriver
 ### Installation
@@ -18,8 +18,20 @@ GodotTestDriver is also not an assertions library. Most test frameworks come wit
 GodotTestDriver is published on [NuGet](https://www.nuget.org/packages/GodotTestDriver). To add it use this command line command (or the NuGet facilities of your IDE):
 
 ```bash
-dotnet add package GodotTestDriver --version 0.0.30
+dotnet add package GodotTestDriver --version 0.1.0
 ```
+
+If you are targeting `netstandard2.1` also add the following lines to your `.csproj` file to make it work with Godot:
+
+```xml
+<PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+</PropertyGroup>
+```
+
+### Real-world example
+
+You can check out the [OpenSCAD Graph Editor](https://github.com/derkork/openscad-graph-editor/tree/master/Tests) project for a real-world example of how to use GodotTestDriver.
 
 ### Fixtures
 

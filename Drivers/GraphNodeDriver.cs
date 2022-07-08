@@ -41,6 +41,35 @@ namespace GodotTestDriver.Drivers
         /// </summary>
         public int OutputPortCount => PresentRoot.GetConnectionOutputCount();
 
+        
+        /// <summary>
+        /// Returns the port type of the given port.
+        /// </summary>
+        public int GetPortType(Port port)
+        {
+            if (!port.IsDefined)
+            {
+                throw new ArgumentException("Port is not defined.");
+            }
+            
+            if (port.IsInput)
+            {
+                if (InputPortCount < port.PortIndex)
+                {
+                    throw new ArgumentException("Port index is out of range.");
+                }
+                return PresentRoot.GetConnectionInputType(port.PortIndex);
+            }
+            else
+            {
+                if (OutputPortCount < port.PortIndex)
+                {
+                    throw new ArgumentException("Port index is out of range.");
+                }
+                return PresentRoot.GetConnectionOutputType(port.PortIndex);
+            }
+        }
+        
         /// <summary>
         /// Global position of a spot where the node can be safely clicked and dragged. Will fail if the node is not visible.
         /// </summary>
