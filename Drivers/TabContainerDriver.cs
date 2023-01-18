@@ -12,7 +12,7 @@ namespace GodotTestDriver.Drivers
     /// A driver for the <see cref="TabContainer"/> control.
     /// </summary>
     [PublicAPI]
-    public class TabContainerDriver<T> : ControlDriver<T> where T : TabContainer
+    public partial class TabContainerDriver<T> : ControlDriver<T> where T : TabContainer
     {
         public TabContainerDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -62,7 +62,7 @@ namespace GodotTestDriver.Drivers
                     "Index must be between 0 and the amount of tabs in the tab control.");
             }
 
-            await tab.GetTree().ProcessFrame();
+            await tab.GetTree().NextFrame();
             var previousTab = tab.CurrentTab;
 
             tab.CurrentTab = index;

@@ -13,9 +13,9 @@ namespace GodotTestDriver
     /// always executed in the main thread. It also provides a simple means of cleaning up the scene after each test.
     /// </summary>
     [PublicAPI]
-    public class Fixture
+    public partial class Fixture
     {
-        private List<Func<Task>> _cleanupSteps = new List<Func<Task>>();
+        private List<Func<Task>> _cleanupSteps = new();
         
         /// <summary>
         /// The <see cref="SceneTree"/> that this fixture is managing.
@@ -33,7 +33,7 @@ namespace GodotTestDriver
         /// </summary>
         public async Task<T> AddToRoot<T>(T node) where T :Node
         {
-            await Tree.ProcessFrame();
+            await Tree.NextFrame();
             
             Tree.Root.AddChild(node);
             
@@ -62,8 +62,8 @@ namespace GodotTestDriver
         public async Task<T> LoadScene<T>(string path) where T : Node
         {
             // make sure we run in the main thread
-            await Tree.ProcessFrame();
-            return AutoFree(GD.Load<PackedScene>(path).Instance<T>());
+            await Tree.NextFrame();
+            return AutoFree(GD.Load<PackedScene>(path).Instantiate<T>());
         }
         
         
@@ -74,7 +74,7 @@ namespace GodotTestDriver
         public T AutoFree<T>(T toFree) where T : Object
         {
             // References are automatically freed, so calling AutoFree on references is wrong.
-            if (toFree is Reference)
+            if (toFree is RefCounted)
             {
                 Log.Error("Trying to auto-free a reference type. I will ignore this but you should probably not do this.");
                 return toFree;
@@ -99,7 +99,7 @@ namespace GodotTestDriver
         public async Task Cleanup()
         {
             // ensure we run on the main thread.
-            await Tree.ProcessFrame();
+            await Tree.NextFrame();
             
             if (_cleanupSteps.Count > 0)
             {

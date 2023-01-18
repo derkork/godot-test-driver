@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Util;
@@ -10,7 +10,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="BaseButton"/> controls.
     /// </summary>
     [PublicAPI]
-    public class BaseButtonDriver<T> : ControlDriver<T> where T:BaseButton
+    public partial class BaseButtonDriver<T> : ControlDriver<T> where T:BaseButton
     {
         public BaseButtonDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -29,7 +29,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Whether the button is currently pressed.
         /// </summary>
-        public bool Pressed => PresentRoot.Pressed;
+        public bool Pressed => PresentRoot.ButtonPressed;
 
         /// <summary>
         ///  Simulates a button press by simply sending the press event.
@@ -44,12 +44,12 @@ namespace GodotTestDriver.Drivers
             }
 
             // make sure we run on main thread
-            await button.GetTree().ProcessFrame();
+            await button.GetTree().NextFrame();
             button.EmitSignal("pressed");
             await button.GetTree().WaitForEvents();
         }
 
-        public override async Task ClickCenter(ButtonList button = ButtonList.Left)
+        public override async Task ClickCenter(MouseButton button = MouseButton.Left)
         {
             if (Disabled)
             {

@@ -8,7 +8,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="Button"/> controls.
     /// </summary>
     [PublicAPI]
-    public class ButtonDriver<T> : BaseButtonDriver<T> where T:Button
+    public partial class ButtonDriver<T> : BaseButtonDriver<T> where T:Button
     {
         public ButtonDriver(Func<T> producer, string description = "") : base(producer, description)
         {

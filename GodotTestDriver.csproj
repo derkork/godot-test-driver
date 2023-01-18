@@ -1,18 +1,18 @@
-<Project Sdk="Godot.NET.Sdk/3.3.0">
+<Project Sdk="Godot.NET.Sdk/4.0.0-beta.10">
   <PropertyGroup>
-    <LangVersion>8</LangVersion>
+    <LangVersion>10</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>GodotTestDriver - A testing library for the Godot engine</Title>
     <Description>This library provides an API that simplifies writing integration tests for Godot projects.</Description>
-    <PackageVersion>1.0.0-pre1</PackageVersion>
+    <PackageVersion>2.0.0-pre1</PackageVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>This is an early version. While it is working API may change. </PackageReleaseNotes>
-    <Copyright>(C) 2022 Jan Thomä</Copyright>
+    <Copyright>(C) 2022-2023 Jan Thomä</Copyright>
     <PackageProjectUrl>https://github.com/derkork/godot-test-driver</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/derkork/godot-test-driver</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />

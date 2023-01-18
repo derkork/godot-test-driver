@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Godot;
 using JetBrains.Annotations;
 
@@ -8,7 +8,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="Label"/> control.
     /// </summary>
     [PublicAPI]
-    public class LabelDriver<T> : ControlDriver<T> where T:Label
+    public partial class LabelDriver<T> : ControlDriver<T> where T:Label
     {
         public LabelDriver(Func<T> producer, string description = "") : base(producer, description)
         {

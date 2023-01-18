@@ -11,7 +11,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for a <see cref="GraphEdit"/>.  
     /// </summary>
     [PublicAPI]
-    public class GraphEditDriver<TGraphEdit, TGraphNodeDriver, TGraphNode> : ControlDriver<TGraphEdit>
+    public partial class GraphEditDriver<TGraphEdit, TGraphNodeDriver, TGraphNode> : ControlDriver<TGraphEdit>
         where TGraphEdit : GraphEdit where TGraphNode : GraphNode where TGraphNodeDriver : GraphNodeDriver<TGraphNode>
     {
         private readonly Func<Func<TGraphNode>, string, TGraphNodeDriver> _nodeDriverProducer;
@@ -108,7 +108,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for a <see cref="GraphEdit"/>.
     /// </summary>
     [PublicAPI]
-    public class GraphEditDriver : GraphEditDriver<GraphEdit, GraphNodeDriver, GraphNode>
+    public partial class GraphEditDriver : GraphEditDriver<GraphEdit, GraphNodeDriver, GraphNode>
     {
         public GraphEditDriver(Func<GraphEdit> producer, string description = "") : base(producer,
             (node, nodeDescription) => new GraphNodeDriver(node, $"{description}-> {nodeDescription}"),

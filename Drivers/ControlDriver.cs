@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Input;
@@ -11,7 +11,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="Control"/> nodes.
     /// </summary>
     [PublicAPI]
-    public class ControlDriver<T> : CanvasItemDriver<T> where T : Control
+    public partial class ControlDriver<T> : CanvasItemDriver<T> where T : Control
     {
         public ControlDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -38,7 +38,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Clicks the control with the mouse in the center.
         /// </summary>
-        public virtual async Task ClickCenter(ButtonList button = ButtonList.Left)
+        public virtual async Task ClickCenter(MouseButton button = MouseButton.Left)
         {
             var control = VisibleRoot;
             await control.GetViewport().ClickMouseAt(control.GetGlobalRect().Center(), button);
@@ -62,7 +62,7 @@ namespace GodotTestDriver.Drivers
         public async Task ReleaseFocus()
         {
             var control = VisibleRoot;
-            await control.GetTree().ProcessFrame();
+            await control.GetTree().NextFrame();
             control.ReleaseFocus();
             await control.GetTree().WaitForEvents();
         }
@@ -73,7 +73,7 @@ namespace GodotTestDriver.Drivers
         public async Task GrabFocus()
         {
             var control = VisibleRoot;
-            await control.GetTree().ProcessFrame();
+            await control.GetTree().NextFrame();
             control.GrabFocus();
             await control.GetTree().WaitForEvents();
         }

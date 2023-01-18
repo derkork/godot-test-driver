@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Util;
@@ -10,7 +10,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the Camera2D node.
     /// </summary>
     [PublicAPI]
-    public class Camera2DDriver<T> : Node2DDriver<T> where T:Camera2D
+    public partial class Camera2DDriver<T> : Node2DDriver<T> where T:Camera2D
     {
         public Camera2DDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -32,13 +32,13 @@ namespace GodotTestDriver.Drivers
         public async Task<bool> WaitUntilSteady(float timeoutSeconds)
         {
             var timeout = new Timeout(timeoutSeconds);
-            var screenPos = PresentRoot.GetCameraScreenCenter();
+            var screenPos = PresentRoot.GetScreenCenterPosition();
             // we treat the camera as steady when it hasn't moved over 3 frames.
             var frameCount = 0;
 
             do
             {
-                var newScreenPos = PresentRoot.GetCameraScreenCenter();
+                var newScreenPos = PresentRoot.GetScreenCenterPosition(); 
                 if ((newScreenPos - screenPos).LengthSquared() < 0.001)
                 {
                     frameCount++;
@@ -54,7 +54,7 @@ namespace GodotTestDriver.Drivers
                 }
 
                 screenPos = newScreenPos;
-                await PresentRoot.GetTree().ProcessFrame();
+                await PresentRoot.GetTree().NextFrame();
             } while (!timeout.IsReached);
 
             return false;

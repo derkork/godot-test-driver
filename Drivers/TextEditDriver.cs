@@ -10,7 +10,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="TextEdit"/> control.
     /// </summary>
     [PublicAPI]
-    public class TextEditDriver<T> : ControlDriver<T> where T : TextEdit
+    public partial class TextEditDriver<T> : ControlDriver<T> where T : TextEdit
     {
         public TextEditDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -18,7 +18,7 @@ namespace GodotTestDriver.Drivers
 
 
         public string Text => PresentRoot.Text;
-        public bool ReadOnly => PresentRoot.Readonly;
+        public bool ReadOnly => !PresentRoot.Editable;
 
 
         public async Task Type(string text)
@@ -30,7 +30,7 @@ namespace GodotTestDriver.Drivers
             }
 
             var edit = VisibleRoot;
-            await edit.GetTree().ProcessFrame();
+            await edit.GetTree().NextFrame();
             await ClickCenter();
             edit.Text = text;
             edit.EmitSignal("text_changed", text);
@@ -42,7 +42,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="TextEdit"/> control.
     /// </summary>  
     [PublicAPI]
-    public class TextEditDriver : TextEditDriver<TextEdit>
+    public partial class TextEditDriver : TextEditDriver<TextEdit>
     {
         public TextEditDriver(Func<TextEdit> producer, string description = "") : base(producer, description)
         {

@@ -12,7 +12,7 @@ namespace GodotTestDriver
     {
         public static LoggingConfiguration Logging { get; } = new LoggingConfiguration();
 
-        public class LoggingConfiguration
+        public partial class LoggingConfiguration
         {
             public Action<string, object[]> DebugLogger
             {

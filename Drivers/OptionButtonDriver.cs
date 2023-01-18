@@ -11,7 +11,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="OptionButton"/> controls.
     /// </summary>
     [PublicAPI]
-    public class OptionButtonDriver<T> : BaseButtonDriver<T> where T : OptionButton
+    public partial class OptionButtonDriver<T> : BaseButtonDriver<T> where T : OptionButton
     {
         public OptionButtonDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -26,7 +26,7 @@ namespace GodotTestDriver.Drivers
             get
             {
                 var uiControl = PresentRoot;
-                for (var i = 0; i < uiControl.GetItemCount(); i++)
+                for (var i = 0; i < uiControl.ItemCount; i++)
                 {
                     yield return uiControl.GetItemText(i);
                 }
@@ -42,7 +42,7 @@ namespace GodotTestDriver.Drivers
             {
                 var uiControl = PresentRoot;
 
-                for (var i = 0; i < uiControl.GetItemCount(); i++)
+                for (var i = 0; i < uiControl.ItemCount; i++)
                 {
                     if (!uiControl.IsItemDisabled(i))
                     {
@@ -81,9 +81,9 @@ namespace GodotTestDriver.Drivers
         public async Task SelectItemWithText(string text)
         {
             var uiControl = VisibleRoot;
-            await uiControl.GetTree().ProcessFrame();
+            await uiControl.GetTree().NextFrame();
 
-            for (var i = 0; i < uiControl.GetItemCount(); i++)
+            for (var i = 0; i < uiControl.ItemCount; i++)
             {
                 if (uiControl.GetItemText(i) != text)
                 {
@@ -112,9 +112,9 @@ namespace GodotTestDriver.Drivers
         public async Task SelectItemWithId(int id)
         {
             var uiControl = VisibleRoot;
-            await uiControl.GetTree().ProcessFrame();
+            await uiControl.GetTree().NextFrame();
 
-            for (var i = 0; i < uiControl.GetItemCount(); i++)
+            for (var i = 0; i < uiControl.ItemCount; i++)
             {
                 if (uiControl.GetItemId(i) != id)
                 {

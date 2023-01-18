@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -114,7 +114,7 @@ namespace GodotTestDriver.Drivers
         /// </summary>
         public bool IsSignalConnected(string signal, Object target, string method)
         {
-            return PresentRoot.IsConnected(signal, target, method);
+            return PresentRoot.IsConnected(signal,new Callable(target,method));
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Godot;
 using JetBrains.Annotations;
 
@@ -8,7 +8,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="RichTextLabel"/> control.
     /// </summary>
     [PublicAPI]
-    public class RichTextLabelDriver<T> : ControlDriver<T> where T:RichTextLabel
+    public partial class RichTextLabelDriver<T> : ControlDriver<T> where T:RichTextLabel
     {
         public RichTextLabelDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -22,7 +22,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// The current bbcode text of the label.
         /// </summary>
-        public string BbCodeText => PresentRoot.BbcodeText;
+        public string BbCodeText => PresentRoot.Text;
     }
  
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Godot;
 using JetBrains.Annotations;
 
@@ -8,7 +8,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="Node2D"/> nodes.
     /// </summary>
     [PublicAPI]
-    public class Node2DDriver<T> : CanvasItemDriver<T> where T : Node2D
+    public partial class Node2DDriver<T> : CanvasItemDriver<T> where T : Node2D
     {
         public Node2DDriver(Func<T> producer, string description = "") : base(producer, description)
         {

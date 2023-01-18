@@ -11,7 +11,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for a popup menu.
     /// </summary>
     [PublicAPI]
-    public class PopupMenuDriver<T> : ControlDriver<T> where T:PopupMenu
+    public partial class PopupMenuDriver<T> : WindowDriver<T> where T:PopupMenu
     {
         public PopupMenuDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -20,7 +20,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns the amount of items in the popup menu.
         /// </summary>
-        public int ItemCount => PresentRoot.GetItemCount();
+        public int ItemCount => PresentRoot.ItemCount;
         
         /// <summary>
         /// Returns the text of the items in the popup menu.
@@ -112,7 +112,7 @@ namespace GodotTestDriver.Drivers
                     $"Item at index {index} is a separator and cannot be selected.");
             }
             
-            await popup.GetTree().ProcessFrame();
+            await popup.GetTree().NextFrame();
             
             // select item
             // ideally we would use a mouse click here but since the API does not provide the position of

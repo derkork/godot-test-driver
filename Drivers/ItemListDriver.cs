@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for an ItemList control.
     /// </summary>
     [PublicAPI]
-    public class ItemListDriver<T> : ControlDriver<T> where T:ItemList
+    public partial class ItemListDriver<T> : ControlDriver<T> where T:ItemList
     {
         
         public ItemListDriver(Func<T> producer, string description = "") : base(producer, description)
@@ -29,7 +29,7 @@ namespace GodotTestDriver.Drivers
                 var uiControl = PresentRoot;
                 
                 var result = new List<string>();
-                for (var i = 0; i < uiControl.GetItemCount(); i++)
+                for (var i = 0; i < uiControl.ItemCount; i++)
                 {
                     if (uiControl.IsItemSelectable(i))
                     {
@@ -80,9 +80,9 @@ namespace GodotTestDriver.Drivers
         public async Task SelectItemWithText(string text)
         {
             var uiControl = VisibleRoot;
-            await uiControl.GetTree().ProcessFrame();
+            await uiControl.GetTree().NextFrame();
 
-            for (var i = 0; i < uiControl.GetItemCount(); i++)
+            for (var i = 0; i < uiControl.ItemCount; i++)
             {
                 if (uiControl.GetItemText(i) != text)
                 {

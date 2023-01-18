@@ -10,7 +10,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for a <see cref="GraphNode"/>
     /// </summary>
     [PublicAPI]
-    public class GraphNodeDriver<T> : ControlDriver<T> where T:GraphNode
+    public partial class GraphNodeDriver<T> : ControlDriver<T> where T:GraphNode
     {
         public GraphNodeDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -24,7 +24,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// The offset of the node inside the graph.
         /// </summary>
-        public Vector2 Offset => PresentRoot.Offset;
+        public Vector2 Offset => PresentRoot.PositionOffset;
         
         /// <summary>
         /// Whether the node is currently selected.
@@ -136,7 +136,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Clicks the mouse at the safe selection spot of this graph node.
         /// </summary>
-        public async Task ClickAtSelectionSpot(ButtonList button = ButtonList.Left)
+        public async Task ClickAtSelectionSpot(MouseButton button = MouseButton.Left)
         {
             await Viewport.ClickMouseAt(SelectionSpot, button);
         }
@@ -188,8 +188,8 @@ namespace GodotTestDriver.Drivers
                 ? targetRoot.GetConnectionInputPosition(targetPort.PortIndex)
                 : targetRoot.GetConnectionOutputPosition(targetPort.PortIndex);
 
-            await Viewport.DragMouse(startPosition + thisRoot.RectGlobalPosition,
-                endPosition + targetRoot.RectGlobalPosition);
+            await Viewport.DragMouse(startPosition + thisRoot.GlobalPosition,
+                endPosition + targetRoot.GlobalPosition);
         }
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace GodotTestDriver.Drivers
                 : thisRoot.GetConnectionOutputPosition(sourcePort.PortIndex);
             var endPosition = startPosition + relativePosition;
 
-            await Viewport.DragMouse(startPosition + thisRoot.RectGlobalPosition,
-                endPosition + thisRoot.RectGlobalPosition);
+            await Viewport.DragMouse(startPosition + thisRoot.GlobalPosition,
+                endPosition + thisRoot.GlobalPosition);
         }
     }
    

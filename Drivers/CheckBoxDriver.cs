@@ -8,13 +8,13 @@ namespace GodotTestDriver.Drivers
     /// Driver for a <see cref="CheckBox"/>.
     /// </summary>
     [PublicAPI]
-    public class CheckBoxDriver<T> : ButtonDriver<T> where T:CheckBox
+    public partial class CheckBoxDriver<T> : ButtonDriver<T> where T:CheckBox
     {
         public CheckBoxDriver(Func<T> provider, string description = "") : base(provider, description)
         {
         }
         
-        public bool IsChecked => PresentRoot.Pressed;
+        public bool IsChecked => PresentRoot.ButtonPressed;
     }
     
     

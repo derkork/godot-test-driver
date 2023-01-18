@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Godot;
 using JetBrains.Annotations;
 
@@ -8,7 +8,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for <see cref="CanvasItem"/> nodes.
     /// </summary>
     [PublicAPI]
-    public class CanvasItemDriver<T> : NodeDriver<T> where T : CanvasItem
+    public partial class CanvasItemDriver<T> : NodeDriver<T> where T : CanvasItem
     {
         public CanvasItemDriver(Func<T> producer, string description = "") : base(producer, description)
         {

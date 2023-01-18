@@ -20,7 +20,7 @@ namespace GodotTestDriver.Util
             var timeout = new Timeout(seconds);
             do
             {
-                await tree.ProcessFrame();
+                await tree.NextFrame();
                 try
                 {
                     action();
@@ -58,7 +58,7 @@ namespace GodotTestDriver.Util
             var timeout = new Timeout(seconds);
             do
             {
-                await tree.ProcessFrame();
+                await tree.NextFrame();
                 if (condition())
                 {
                     return;
@@ -89,7 +89,7 @@ namespace GodotTestDriver.Util
             do
             {
                 action();
-                await tree.ProcessFrame();
+                await tree.NextFrame();
             } while (!timeout.IsReached);
         }
         
@@ -108,7 +108,7 @@ namespace GodotTestDriver.Util
         /// </summary>
         public static async Task WaitForEvents(this SceneTree tree)
         {
-            await tree.ProcessFrame(2);
+            await tree.NextFrame(2);
         }
         
         
@@ -129,7 +129,7 @@ namespace GodotTestDriver.Util
         /// Waits until the given amount of frames have passed. Returns in the context of the `Process` method
         /// on the main thread.
         /// </summary>
-        public static async Task ProcessFrame(this SceneTree tree, int frames = 1)
+        public static async Task NextFrame(this SceneTree tree, int frames = 1)
         {
             // add a temporary node to the tree and wait until it's process method is called.
             var processWaiter = new ProcessWaiter();
@@ -152,7 +152,7 @@ namespace GodotTestDriver.Util
                 throw new InvalidOperationException("Node is not inside a tree.");
             }
 
-            await node.GetTree().ProcessFrame(frames);
+            await node.GetTree().NextFrame(frames);
         }
 
         /// <summary>

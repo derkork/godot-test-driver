@@ -2,18 +2,18 @@ using Godot;
 
 namespace GodotTestDriver.Util
 {
-    internal class ProcessWaiter : Node
+    internal partial class ProcessWaiter : Node
     {
         [Signal]
-        public delegate void OnProcess();
+        public delegate void OnProcessEventHandler();
 
         [Signal]
-        public delegate void OnPhysicsProcess();
+        public delegate void OnPhysicsProcessEventHandler();
 
 
         public int CountDown { get; set; } = 1;
 
-        public override void _PhysicsProcess(float delta)
+        public override void _PhysicsProcess(double delta)
         {
             if (GetSignalConnectionList(nameof(OnPhysicsProcess)).Count <= 0)
             {
@@ -36,7 +36,7 @@ namespace GodotTestDriver.Util
             QueueFree();
         }
 
-        public override void _Process(float delta)
+        public override void _Process(double delta)
         {
             if (GetSignalConnectionList(nameof(OnProcess)).Count <= 0)
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Util;
@@ -10,7 +10,7 @@ namespace GodotTestDriver.Drivers
     /// Driver for the <see cref="LineEdit"/> control.
     /// </summary>
     [PublicAPI]
-    public class LineEditDriver<T> : ControlDriver<T> where T:LineEdit
+    public partial class LineEditDriver<T> : ControlDriver<T> where T:LineEdit
     {
         public LineEditDriver(Func<T> producer, string description = "") : base(producer, description)
         {
@@ -37,7 +37,7 @@ namespace GodotTestDriver.Drivers
             }
             
             var edit = VisibleRoot;
-            await edit.GetTree().ProcessFrame();
+            await edit.GetTree().NextFrame();
             await ClickCenter();
             edit.Text = text;
             edit.EmitSignal("text_changed", text);
