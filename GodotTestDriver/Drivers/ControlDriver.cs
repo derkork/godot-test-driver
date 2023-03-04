@@ -30,7 +30,8 @@ namespace GodotTestDriver.Drivers
                 }
 
                 var control = VisibleRoot;
-                return control.GetViewportRect().Encloses(control.GetGlobalRect());
+                var screenRect = control.GetViewport().WorldToScreen(control.GetGlobalRect());
+                return control.GetViewportRect().Encloses(screenRect);
             }
         }
 

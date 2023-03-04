@@ -97,7 +97,7 @@ namespace GodotTestDriver.Drivers
 
                 uiControl.Select(i);
                 // calling this function will not emit the signal so we need to do this ourselves
-                uiControl.EmitSignal("item_selected", i);
+                uiControl.EmitSignal(OptionButton.SignalName.ItemSelected, i);
                 await uiControl.GetTree().WaitForEvents();
                 return;
             }
@@ -128,7 +128,7 @@ namespace GodotTestDriver.Drivers
 
                 uiControl.Select(i);
                 // calling this function will not emit the signal so we need to do this ourselves
-                uiControl.EmitSignal("item_selected", i);
+                uiControl.EmitSignal(OptionButton.SignalName.ItemSelected, i);
                 await uiControl.GetTree().WaitForEvents();
                 return;
             }

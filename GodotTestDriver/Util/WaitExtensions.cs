@@ -47,7 +47,7 @@ namespace GodotTestDriver.Util
         {
             await node.GetTree().WithinSeconds(seconds, action);
         }
-
+        
 
         /// <summary>
         /// Waits for the given amount of seconds for the given condition to be true. If the condition is not true
@@ -131,13 +131,11 @@ namespace GodotTestDriver.Util
         /// </summary>
         public static async Task NextFrame(this SceneTree tree, int frames = 1)
         {
-            // add a temporary node to the tree and wait until it's process method is called.
-            var processWaiter = new ProcessWaiter();
-            processWaiter.CountDown = frames;
-            tree.Root.AddChild(processWaiter);
-
-            // node will destroy itself when it's process method is called.
-            await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnProcess));
+            while(frames > 0)
+            {
+                await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                frames--;
+            }
         }
 
 
@@ -161,13 +159,11 @@ namespace GodotTestDriver.Util
         /// </summary>
         public static async Task PhysicsProcessFrame(this SceneTree tree, int frames = 1)
         {
-            // add a temporary node to the tree and wait until it's process method is called.
-            var processWaiter = new ProcessWaiter();
-            processWaiter.CountDown = frames;
-            tree.Root.AddChild(processWaiter);
-            
-            // node will destroy itself when it's PhysicsProcess method is called.
-            await processWaiter.ToSignal(processWaiter, nameof(ProcessWaiter.OnPhysicsProcess));
+            while(frames > 0)
+            {
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                frames--;
+            }
         }
 
         /// <summary>

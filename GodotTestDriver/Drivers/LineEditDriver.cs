@@ -40,7 +40,7 @@ namespace GodotTestDriver.Drivers
             await edit.GetTree().NextFrame();
             await ClickCenter();
             edit.Text = text;
-            edit.EmitSignal("text_changed", text);
+            edit.EmitSignal(LineEdit.SignalName.TextChanged, text);
             await edit.GetTree().WaitForEvents();
         }
 
@@ -48,7 +48,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Types the given text into the line edit. Existing text will be overwritten. Presses "enter" afterwards.
         /// </summary>
-        public async Task Enter(string text)
+        public async Task Submit(string text)
         {
             if (!Editable)
             {
@@ -58,8 +58,8 @@ namespace GodotTestDriver.Drivers
             var edit = VisibleRoot;
             // first type the text, so the text change events are triggered
             await Type(text);
-            // then send the "text_entered" event 
-            edit.EmitSignal("text_entered", text);
+            // then send the "TextSubmitted" event 
+            edit.EmitSignal(LineEdit.SignalName.TextSubmitted, text);
             await edit.GetTree().WaitForEvents();
         }
         

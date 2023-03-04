@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using JetBrains.Annotations;
-using Object = Godot.Object;
+using Object = Godot.GodotObject;
 
 namespace GodotTestDriver.Drivers
 {
@@ -123,6 +123,14 @@ namespace GodotTestDriver.Drivers
         public bool IsSignalConnectedToAnywhere(string signal)
         {
             return PresentRoot.GetSignalConnectionList(signal).Count > 0;
+        }
+        
+        /// <summary>
+        /// Returns a signal awaiter that can be used to wait for the given signal.
+        /// </summary>
+        public SignalAwaiter GetSignalAwaiter(StringName signal)
+        {
+            return PresentRoot.ToSignal(PresentRoot,signal);
         }
     }
 }

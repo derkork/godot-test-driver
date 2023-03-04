@@ -7,7 +7,6 @@ namespace GodotTestDriver.Drivers
     /// <summary>
     /// A driver for UI Windows.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     [PublicAPI]
     public class WindowDriver<T> : NodeDriver<T> where T:Window
     {

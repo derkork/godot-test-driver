@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Util;
 using JetBrains.Annotations;
-using Object = Godot.Object;
+using Object = Godot.GodotObject;
 
 namespace GodotTestDriver
 {

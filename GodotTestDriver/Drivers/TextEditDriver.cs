@@ -33,7 +33,7 @@ namespace GodotTestDriver.Drivers
             await edit.GetTree().NextFrame();
             await ClickCenter();
             edit.Text = text;
-            edit.EmitSignal("text_changed", text);
+            edit.EmitSignal(TextEdit.SignalName.TextChanged, text);
             await edit.GetTree().WaitForEvents();
         }
     }

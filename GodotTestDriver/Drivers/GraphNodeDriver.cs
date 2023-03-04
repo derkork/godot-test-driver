@@ -81,7 +81,7 @@ namespace GodotTestDriver.Drivers
                 var rect = node.GetGlobalRect();
                 // we assume that a position 5 pixels below the top border horizontally centered is a safe selection
                 // spot as the node will have a title there.
-                return rect.Position + new Vector2(rect.Size.x / 2, 5);
+                return rect.Position + new Vector2(rect.Size.X / 2, 5);
             }
         }
 
@@ -113,7 +113,7 @@ namespace GodotTestDriver.Drivers
             var node = VisibleRoot;
             var rect = node.GetRect();
 
-            await DragBy(new Vector2(rect.Size.x * delta.x, rect.Size.y * delta.y));
+            await DragBy(new Vector2(rect.Size.X * delta.X, rect.Size.X * delta.Y));
         }
 
         /// <summary>

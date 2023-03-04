@@ -117,7 +117,7 @@ namespace GodotTestDriver.Drivers
             // select item
             // ideally we would use a mouse click here but since the API does not provide the position of
             // each entry, we have to fake it.
-            popup.EmitSignal("index_pressed", index);
+            popup.EmitSignal(PopupMenu.SignalName.IndexPressed, index);
             popup.Hide();
             await popup.GetTree().WaitForEvents();
         }

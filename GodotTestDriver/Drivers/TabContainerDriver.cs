@@ -68,10 +68,10 @@ namespace GodotTestDriver.Drivers
             tab.CurrentTab = index;
 
             // emit the signals for the tab change
-            tab.EmitSignal("tab_selected", index);
+            tab.EmitSignal(TabContainer.SignalName.TabSelected, index);
             if (previousTab != index)
             {
-                tab.EmitSignal("tab_changed", index);
+                tab.EmitSignal(TabContainer.SignalName.TabChanged, index);
             }
 
             await tab.GetTree().WaitForEvents();

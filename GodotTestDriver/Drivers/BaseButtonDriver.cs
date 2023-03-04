@@ -45,7 +45,7 @@ namespace GodotTestDriver.Drivers
 
             // make sure we run on main thread
             await button.GetTree().NextFrame();
-            button.EmitSignal("pressed");
+            button.EmitSignal(BaseButton.SignalName.Pressed);
             await button.GetTree().WaitForEvents();
         }
 

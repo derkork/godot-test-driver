@@ -10,18 +10,15 @@ config_version=5
 
 [application]
 
-config/name="GodotTestDriver"
-config/features=PackedStringArray("4.0", "C#")
-config/icon="res://icon.png"
+config/name="GodotTestDriver.Tests"
+run/main_scene="res://Tests.tscn"
+config/features=PackedStringArray("4.0", "C#", "Mobile")
+config/icon="res://icon.svg"
 
 [dotnet]
 
-project/assembly_name="GodotTestDriver"
-
-[physics]
-
-common/enable_pause_aware_picking=true
+project/assembly_name="GodotTestDriver.Tests"
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+renderer/rendering_method="mobile"
