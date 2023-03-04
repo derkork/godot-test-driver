@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>GodotTestDriver - A testing library for the Godot engine</Title>
     <Description>This library provides an API that simplifies writing integration tests for Godot projects.</Description>
-    <PackageVersion>##DEVBUILD##</PackageVersion>
+    <PackageVersion>0.0.0-devbuild</PackageVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>This is an early version. While it is working API may change. </PackageReleaseNotes>
     <Copyright>(C) 2022-2023 Jan Thomä</Copyright>

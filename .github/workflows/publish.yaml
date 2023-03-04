@@ -28,7 +28,7 @@ jobs:
       - name: write version into file
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: "##DEVBUILD##"
+          find: "0.0.0-devbuild"
           replace: ${{steps.tag_version.outputs.TAG_VERSION}}
           regex: false
           include: GodotTestDriver/GodotTestDriver.csproj
