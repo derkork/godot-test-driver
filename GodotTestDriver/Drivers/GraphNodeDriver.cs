@@ -27,6 +27,11 @@ namespace GodotTestDriver.Drivers
         public Vector2 Offset => PresentRoot.PositionOffset;
         
         /// <summary>
+        /// The relative position and size of the node.
+        /// </summary>
+        public Rect2 Rect => PresentRoot.GetRect();
+        
+        /// <summary>
         /// Whether the node is currently selected.
         /// </summary>
         public bool Selected => PresentRoot.Selected;

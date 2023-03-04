@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0pre1] - 2023-03-04
+## [2.0.0pre] - 2023-03-04
 ### Breaking Changes
 
 - Version 2.0.0 has been updated for Godot 4. It is no longer compatible with Godot 3. 
@@ -17,11 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A new `WindowDriver` class has been added to use as base class for driving `Window` nodes.
 - A new `Sprite2DDriver` class has been added to use as base class for driving `Sprite2D` nodes.
+- `GraphNodeDriver` now has  `Rect` property to get the node's rect.
 - All node drivers have now a `GetSignalAwaiter` method to allow awaiting signals that the underlying node emits. Note, that you need to get the awaiter _before_ you run the code that emits the signal. Otherwise the awaiter will never complete.
+- `ItemListDriver` now has an `ItemCount` property to get the number of items in the list.
+- `ItemListDriver` has a new function `SelectItemsWithText` which allows to select multiple items at once.
+- `ItemListDriver`s `SelectItemWithText` now has an optional parameter `addToSelection` to allow adding to the current selection instead of replacing it.
+- `ItemListDriver` now has a `DeselectAll` function to deselect all items.
+- `ItemListDriver` now has an `ActivateItemWithText` function to activate (double click or press enter on) an item by its text.
 
 ### Fixed 
 - `IsFullyInView` in `ControlDriver` now works correctly when the canvas transform is translated or scaled.
-
+- `SelectableItems` in `ItemListDriver` now no longer returns items that are disabled.
 
 
 ## [1.0.0] - 2022-07-14

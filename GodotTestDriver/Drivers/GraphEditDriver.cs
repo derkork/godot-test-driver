@@ -49,7 +49,7 @@ namespace GodotTestDriver.Drivers
             var fromRoot = from.PresentRoot;
             var toRoot = to.PresentRoot;
 
-            return graphEdit.GetConnectionList().Cast<Dictionary>()
+            return graphEdit.GetConnectionList()
                 .Any(connection =>
                     (string) connection["from"] == fromRoot.Name
                     && (int) connection["from_port"] == fromPort.PortIndex

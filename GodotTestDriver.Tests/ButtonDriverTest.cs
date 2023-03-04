@@ -13,15 +13,15 @@ using Shouldly;
 public class ButtonDriverTest : DriverTest
 {
     
-    private readonly ButtonDriver _buttonDriver;
-    private readonly LabelDriver _labelDriver;
-    private readonly ControlDriver<Panel> _panelDriver;
+    private readonly ButtonDriver _button;
+    private readonly LabelDriver _label;
+    private readonly ControlDriver<Panel> _panel;
 
     public ButtonDriverTest(Node testScene) : base(testScene)
     {
-        _buttonDriver = new ButtonDriver(() => RootNode.GetNode<Button>("Button"));
-        _labelDriver = new LabelDriver(() => RootNode.GetNode<Label>("Label"));
-        _panelDriver = new ControlDriver<Panel>(() => RootNode.GetNode<Panel>("Panel"));
+        _button = new ButtonDriver(() => RootNode.GetNode<Button>("Button"));
+        _label = new LabelDriver(() => RootNode.GetNode<Label>("Label"));
+        _panel = new ControlDriver<Panel>(() => RootNode.GetNode<Panel>("Panel"));
     }
 
 
@@ -30,30 +30,30 @@ public class ButtonDriverTest : DriverTest
     {
         // WHEN
         // i click the button
-        await _buttonDriver.ClickCenter();
+        await _button.ClickCenter();
         // the label text changes.
-        _labelDriver.Text.ShouldBe("did work");
+        _label.Text.ShouldBe("did work");
         // and the panel disappears
-        _panelDriver.IsVisible.ShouldBeFalse();
+        _panel.IsVisible.ShouldBeFalse();
     }
     
     [Test]
     public async Task ClickingDisabledButtonThrowsException()
     {
         // SETUP
-        _buttonDriver.PresentRoot.Disabled = true;
+        _button.PresentRoot.Disabled = true;
         // WHEN
         // i click the button then an exception is thrown
-        await Should.ThrowAsync<InvalidOperationException>(async () => await _buttonDriver.ClickCenter());
+        await Should.ThrowAsync<InvalidOperationException>(async () => await _button.ClickCenter());
     }
     
     [Test]
     public async Task ClickingHiddenButtonThrowsException()
     {
         // SETUP
-        _buttonDriver.PresentRoot.Visible = false;
+        _button.PresentRoot.Visible = false;
         // WHEN
         // i click the button then an exception is thrown
-        await Should.ThrowAsync<InvalidOperationException>(async () => await _buttonDriver.ClickCenter());
+        await Should.ThrowAsync<InvalidOperationException>(async () => await _button.ClickCenter());
     }
 }
