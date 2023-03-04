@@ -78,4 +78,4 @@ jobs:
 
       - name: 🧪 Run Tests
         working-directory: GodotTestDriver.Tests
-        run: godot --headless --run-tests --quit-on-finish
+        run: godot --run-tests --quit-on-finish
