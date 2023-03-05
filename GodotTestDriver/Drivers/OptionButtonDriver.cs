@@ -44,7 +44,7 @@ namespace GodotTestDriver.Drivers
 
                 for (var i = 0; i < uiControl.ItemCount; i++)
                 {
-                    if (!uiControl.IsItemDisabled(i))
+                    if (!uiControl.IsItemDisabled(i) && !uiControl.IsItemSeparator(i))
                     {
                         yield return uiControl.GetItemText(i);
                     }
@@ -76,34 +76,42 @@ namespace GodotTestDriver.Drivers
 
 
         /// <summary>
+        /// Returns the index of the item with the given text. Throws an exception if the item is not found or not selectable.
+        /// </summary>
+        private int IndexOf(string text)
+        {
+            var uiControl = VisibleRoot;
+            for (var i = 0; i < uiControl.ItemCount; i++)
+            {
+                if (uiControl.GetItemText(i) == text)
+                {
+                    if (uiControl.IsItemDisabled(i) || uiControl.IsItemSeparator(i))
+                    {
+                        throw new InvalidOperationException(
+                            ErrorMessage($"Item with text '{text}' is not selectable."));
+                    }
+
+                    return i;
+                }
+            }
+
+            throw new InvalidOperationException(
+                ErrorMessage($"Option button does not contain item with name '{text}'."));
+        }
+
+
+        /// <summary>
         /// Selects an item with the given text.
         /// </summary>
         public async Task SelectItemWithText(string text)
         {
             var uiControl = VisibleRoot;
             await uiControl.GetTree().NextFrame();
-
-            for (var i = 0; i < uiControl.ItemCount; i++)
-            {
-                if (uiControl.GetItemText(i) != text)
-                {
-                    continue;
-                }
-
-                if (uiControl.IsItemDisabled(i))
-                {
-                    throw new InvalidOperationException(ErrorMessage($"Item with text '{text}' is not selectable."));
-                }
-
-                uiControl.Select(i);
-                // calling this function will not emit the signal so we need to do this ourselves
-                uiControl.EmitSignal(OptionButton.SignalName.ItemSelected, i);
-                await uiControl.GetTree().WaitForEvents();
-                return;
-            }
-
-            throw new InvalidOperationException(
-                ErrorMessage($"Option button does not contain item with name '{text}'."));
+            var index = IndexOf(text);
+            uiControl.Select(index);
+            // calling this function will not emit the signal so we need to do this ourselves
+            uiControl.EmitSignal(OptionButton.SignalName.ItemSelected, index);
+            await uiControl.GetTree().WaitForEvents();
         }
 
         /// <summary>

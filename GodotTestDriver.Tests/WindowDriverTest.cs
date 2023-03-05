@@ -1,0 +1,48 @@
+﻿using System.Threading.Tasks;
+using Godot;
+using GoDotTest;
+using GodotTestDriver.Drivers;
+using GodotTestDriver.Tests;
+using Shouldly;
+
+public partial class WindowDriverTest : DriverTest
+{
+    private readonly WindowDriver _window;
+
+    public WindowDriverTest(Node testScene) : base(testScene)
+    {
+        _window = new WindowDriver(() => RootNode.GetNode<Window>("Window"));
+    }
+
+    [Test]
+    public async Task WindowClosingWorks()
+    {
+        // GIVEN
+        // the window is visible
+        _window.IsVisible.ShouldBeTrue();
+        
+        // WHEN
+        // i close the window
+        await _window.Close();
+        
+        // THEN
+        // the window is not visible
+        _window.IsVisible.ShouldBeFalse();
+    }
+    
+    // dragging the window works
+    [Test]
+    public async Task WindowDraggingWorks()
+    {
+        var initialPosition = _window.Position;
+        // WHEN
+        // i drag the window
+        await _window.DragByPixels(100, 100);
+        
+        // THEN
+        // the window is visible
+        _window.IsVisible.ShouldBeTrue();
+        // and the window is at the correct position
+        _window.Position.ShouldBe(initialPosition + new Vector2I(100, 100));
+    }
+}

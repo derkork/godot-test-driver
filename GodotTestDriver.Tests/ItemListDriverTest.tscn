@@ -13,6 +13,6 @@ item_0/text = "Normal Item 1"
 item_1/text = "Normal Item 2"
 item_2/text = "NonSelectable Item"
 item_2/selectable = false
-item_3/text = "DisabledItem"
+item_3/text = "Disabled Item"
 item_3/selectable = false
 item_3/disabled = true

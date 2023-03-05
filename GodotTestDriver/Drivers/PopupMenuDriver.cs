@@ -25,7 +25,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns the text of the items in the popup menu.
         /// </summary>
-        public IEnumerable<string> MenuItems
+        public IEnumerable<string> Items
         {
             get
             {
@@ -39,7 +39,7 @@ namespace GodotTestDriver.Drivers
         /// <summary>
         /// Returns the text of the items in the popup menu which are currently selectable (e.g. not disabled and no separator).
         /// </summary>
-        public IEnumerable<string> SelectableMenuItems
+        public IEnumerable<string> SelectableItems
         {
             get
             {
@@ -64,12 +64,48 @@ namespace GodotTestDriver.Drivers
         }
         
         /// <summary>
+        /// Returns whether the item with the given text is checked.
+        /// </summary>
+        public bool IsItemChecked(string text)
+        {
+            var element = PresentRoot;
+            
+            for (var i = 0; i < element.ItemCount; i++)
+            {
+                if (element.GetItemText(i) == text)
+                {
+                    return element.IsItemChecked(i);
+                }
+            }
+
+            throw new InvalidOperationException($"Item with text '{text}' not found.");
+        }
+        
+        /// <summary>
         /// Returns whether the item at the given index is disabled.
         /// </summary>
         public bool IsItemDisabled(int index)
         {
             VerifyIndex(index);
             return PresentRoot.IsItemDisabled(index);
+        }
+
+        /// <summary>
+        /// Checks if the item with the given text is disabled.
+        /// </summary>
+        public bool IsItemDisabled(string text)
+        {
+            var element = PresentRoot;
+            
+            for (var i = 0; i < element.ItemCount; i++)
+            {
+                if (element.GetItemText(i) == text)
+                {
+                    return element.IsItemDisabled(i);
+                }
+            }
+
+            throw new InvalidOperationException($"Item with text '{text}' not found.");
         }
 
         /// <summary>
@@ -80,6 +116,25 @@ namespace GodotTestDriver.Drivers
             VerifyIndex(index);
             return PresentRoot.IsItemSeparator(index);
         }
+        
+        /// <summary>
+        /// Returns whether the item with the given text is a separator.
+        /// </summary>
+        public bool IsItemSeparator(string text)
+        {
+            var element = PresentRoot;
+            
+            for (var i = 0; i < element.ItemCount; i++)
+            {
+                if (element.GetItemText(i) == text)
+                {
+                    return element.IsItemSeparator(i);
+                }
+            }
+
+            throw new InvalidOperationException($"Item with text {text} not found.");
+        }
+        
         
         /// <summary>
         /// Returns the ID of the item at the given index.

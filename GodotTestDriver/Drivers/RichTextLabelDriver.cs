@@ -18,11 +18,12 @@ namespace GodotTestDriver.Drivers
         /// The current text of the label.
         /// </summary>
         public string Text => PresentRoot.Text;
+
         
         /// <summary>
-        /// The current bbcode text of the label.
+        /// Returns true if the label has bbcode enabled.
         /// </summary>
-        public string BbCodeText => PresentRoot.Text;
+        public bool IsBbcodeEnabled => PresentRoot.BbcodeEnabled;
     }
  
     /// <summary>

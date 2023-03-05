@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0pre] - 2023-03-04
+## [2.0.0] - 2023-03-05
 ### Breaking Changes
 
-- Version 2.0.0 has been updated for Godot 4. It is no longer compatible with Godot 3. 
-- `TweenDriver` has been removed as `Tween` is no longer a node.
-- The experimental screenshot extension has been removed.
+- Version 2.0.0 has been updated for Godot 4. It is no longer compatible with Godot 3.
 - .net targets have been updated to match Godot 4. Currently only `net6.0` is supported.
+- `TweenDriver` has been removed as `Tween` is no longer a node.
 - `EnterText` in `LineEditDriver` has been renamed to `SubmitText` to match the new name of the signal in Godot 4.
+- `SelectableMenuItems` in `PopupMenuDriver` has been renamed to `SelectableItems` to match the naming convention of other drivers.
+- `MenuItems` in `PopupMenuDriver` has been renamed to `Items` to match the naming convention of other drivers.
+- The experimental screenshot extension has been removed. It may be re-added in a future version but for now it's not useful the way it is.
+- `BBCodeText` in `RichTextLabelDriver` has been removed as in Godot 4 `RichTextLabel` no longer has a separate property for BBCode text.
 
 ### Added
 
@@ -24,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ItemListDriver`s `SelectItemWithText` now has an optional parameter `addToSelection` to allow adding to the current selection instead of replacing it.
 - `ItemListDriver` now has a `DeselectAll` function to deselect all items.
 - `ItemListDriver` now has an `ActivateItemWithText` function to activate (double click or press enter on) an item by its text.
+- `RichTextLabelDriver` now has a `IsBBCodeEnabled` property to check whether BBCode is enabled.
 
 ### Fixed 
 - `IsFullyInView` in `ControlDriver` now works correctly when the canvas transform is translated or scaled.

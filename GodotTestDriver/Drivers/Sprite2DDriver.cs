@@ -18,12 +18,12 @@ public class Sprite2DDriver<T> : Node2DDriver<T> where T:Sprite2D
     /// <summary>
     /// Whether the sprite is flipped horizontally.
     /// </summary>
-    public bool IsFlippedH => PresentRoot.FlipH;
+    public bool IsFlippedHorizontally => PresentRoot.FlipH;
     
     /// <summary>
     /// Whether the sprite is flipped vertically.
     /// </summary>
-    public bool IsFlippedV => PresentRoot.FlipV;
+    public bool IsFlippedVertically => PresentRoot.FlipV;
     
     /// <summary>
     /// Returns true if the Node is visible and fully inside the viewport rect.
