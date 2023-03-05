@@ -1,5 +1,5 @@
 name: 🚥 Tests
-
+on: [workflow_dispatch]
 jobs:
   tests:
     name: 🧪 Evaluate Tests on ${{ matrix.os }}
