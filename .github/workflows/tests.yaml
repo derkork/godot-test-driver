@@ -1,10 +1,7 @@
 name: 🚥 Tests
-on:
-  push:
 
 jobs:
   tests:
-    if: {{ false }} # Disable this job for now.
     name: 🧪 Evaluate Tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
