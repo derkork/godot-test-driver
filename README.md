@@ -8,9 +8,7 @@ This library provides an API that simplifies writing integration tests for Godot
 - A fixture implementation for setting up test fixtures and destroying them properly after the test.
 
 ### What is it not?
-GodotTestDriver is not a test framework. There are already a lot of godot test frameworks out there (e.g GodotXUnit, WAT, GDUnit3) so there is no need add another one to the list. Pick one and use GodotTestDriver on top of it.
-
-GodotTestDriver is also not an assertions library. Most test frameworks come with built-in assertions, so just use these. 
+GodotTestDriver is not a test framework. There are already a lot of test frameworks out there (e.g GodotXUnit, WAT, GDUnit, GoDotTest, etc.) so there is no need add another one to the list. Pick one and use GodotTestDriver on top of it. GodotTestDriver is also not an assertions library. Most test frameworks come with built-in assertions, and there are also standalone assertion libraries (like Shouldly) so just use these. 
 
 ## How to use GodotTestDriver
 ### Installation
@@ -18,7 +16,7 @@ GodotTestDriver is also not an assertions library. Most test frameworks come wit
 GodotTestDriver is published on [NuGet](https://www.nuget.org/packages/GodotTestDriver). To add it use this command line command (or the NuGet facilities of your IDE):
 
 ```bash
-dotnet add package GodotTestDriver --version 0.1.0
+dotnet add package GodotTestDriver --version 2.0.0-pre1
 ```
 
 If you are targeting `netstandard2.1` also add the following lines to your `.csproj` file to make it work with Godot:
@@ -219,28 +217,30 @@ async Task ClickingYesClosesTheDialog() {
 }
 ```
 
-Note that because of the way drivers are implemented `dialogDriver.YesButton` will never throw a `NullReferenceException` even if the button is currently not present in the tree. This greatly simplifies your testing code. 
+Note that because of the way drivers are implemented `dialogDriver.YesButton` will never throw a `NullReferenceException` even if the button is currently not present in the tree. This greatly simplifies your testing code. Also your testing code now is fully decoupled from the actual node structure. If you decide to change the node structure of the dialog, you will only need to change the `ConfirmationDialogDriver`, instead of all the tests that use it.
 
 ### Built-in drivers
  
-- [BaseButtonDriver](Drivers/BaseButtonDriver.cs) - a driver base class for button-like UI elements
-- [ButtonDriver](Drivers/ButtonDriver.cs) - a driver for buttons
-- [Camera2DDriver](Drivers/Camera2DDriver.cs) - a driver for 2D cameras
-- [CanvasItemDriver](Drivers/CanvasItemDriver.cs) - a driver for canvas items
-- [CheckBoxDriver](Drivers/CheckBoxDriver.cs) - a driver for check boxes
-- [ControlDriver](Drivers/ControlDriver.cs) - the root driver class for drivers working on controls, can be used for any control
-- [GraphEditDriver](Drivers/GraphEditDriver.cs) - a driver for graph editors
-- [GraphNodeDriver](Drivers/GraphNodeDriver.cs) - a driver for graph nodes
-- [ItemListDriver](Drivers/ItemListDriver.cs) - a driver for item lists
-- [LabelDriver](Drivers/LabelDriver.cs) - a driver for labels
-- [LineEditDriver](Drivers/LineEditDriver.cs) - a driver for line edits
-- [Node2DDriver](Drivers/Node2DDriver.cs) - a driver for 2D nodes
-- [NodeDriver](Drivers/NodeDriver.cs) - the root driver class.
-- [OptionButtonDriver](Drivers/OptionButtonDriver.cs) - a driver for option buttons
-- [PopupMenuDriver](Drivers/PopupMenuDriver.cs) - a driver for popup menus
-- [RichTextLabelDriver](Drivers/RichTextLabelDriver.cs) - a driver for rich text labels
-- [TextEditDriver](Drivers/TextEditDriver.cs) - a driver for text edits
-- [TweenDriver](Drivers/TweenDriver.cs) - a driver for tweens
+- [BaseButtonDriver](GodotTestDriver/Drivers/BaseButtonDriver.cs) - a driver base class for button-like UI elements
+- [ButtonDriver](GodotTestDriver/Drivers/ButtonDriver.cs) - a driver for buttons
+- [Camera2DDriver](GodotTestDriver/Drivers/Camera2DDriver.cs) - a driver for 2D cameras
+- [CanvasItemDriver](GodotTestDriver/Drivers/CanvasItemDriver.cs) - a driver for canvas items
+- [CheckBoxDriver](GodotTestDriver/Drivers/CheckBoxDriver.cs) - a driver for check boxes
+- [ControlDriver](GodotTestDriver/Drivers/ControlDriver.cs) - the root driver class for drivers working on controls, can be used for any control
+- [GraphEditDriver](GodotTestDriver/Drivers/GraphEditDriver.cs) - a driver for graph editors
+- [GraphNodeDriver](GodotTestDriver/Drivers/GraphNodeDriver.cs) - a driver for graph nodes
+- [ItemListDriver](GodotTestDriver/Drivers/ItemListDriver.cs) - a driver for item lists
+- [LabelDriver](GodotTestDriver/Drivers/LabelDriver.cs) - a driver for labels
+- [LineEditDriver](GodotTestDriver/Drivers/LineEditDriver.cs) - a driver for line edits
+- [Node2DDriver](GodotTestDriver/Drivers/Node2DDriver.cs) - a driver for 2D nodes
+- [NodeDriver](GodotTestDriver/Drivers/NodeDriver.cs) - the root driver class.
+- [OptionButtonDriver](GodotTestDriver/Drivers/OptionButtonDriver.cs) - a driver for option buttons
+- [PopupMenuDriver](GodotTestDriver/Drivers/PopupMenuDriver.cs) - a driver for popup menus
+- [RichTextLabelDriver](GodotTestDriver/Drivers/RichTextLabelDriver.cs) - a driver for rich text labels
+- [Sprite2DDriver](GodotTestDriver/Drivers/Sprite2DDriver.cs) - a driver for 2D sprites
+- [TextEditDriver](GodotTestDriver/Drivers/TextEditDriver.cs) - a driver for text edits
+- [WindowDriver](GodotTestDriver/Drivers/WindowDriver.cs) - a driver for windows
+
 
 ## Input
 ### Simulating mouse input
