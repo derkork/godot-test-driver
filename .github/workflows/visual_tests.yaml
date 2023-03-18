@@ -83,11 +83,11 @@ jobs:
           version: ${{ steps.infer_godot_version.outputs.godot_version }}
 
       - name: 🧑‍🔬 Generate .NET Bindings
-        working-directory: GameProject
+        working-directory: GodotTestDriver.Tests
         run: godot --headless --build-solutions --quit || exit 0
 
       - name: 🌋 Run Tests in Godot
-        working-directory: GameProject
+        working-directory: GodotTestDriver.Tests
         run: |
           xvfb-run godot --audio-driver Dummy --rendering-driver ${{ matrix.render-driver }} --run-tests --quit-on-finish
           echo "Finished running tests in Godot with emulated ${{ matrix.render-driver }} graphics."
