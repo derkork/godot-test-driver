@@ -1,6 +1,7 @@
 name: 🖼 Visual Tests
 on:
-  pull_request
+  - pull_request
+  - workflow_dispatch
 
 jobs:
   experiment:
