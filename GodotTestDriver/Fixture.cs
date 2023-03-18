@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using GodotTestDriver.Util;
@@ -22,6 +24,10 @@ namespace GodotTestDriver
         /// </summary>
         public SceneTree Tree { get; }
 
+        /// <summary>
+        /// Create a new fixture for use with a scene tree.
+        /// </summary>
+        /// <param name="tree">Godot scene tree.</param>
         public Fixture(SceneTree tree)
         {
             Tree = tree;
@@ -36,25 +42,51 @@ namespace GodotTestDriver
             await Tree.NextFrame();
             
             Tree.Root.AddChild(node);
+            AddCleanupStep(() => Tree.Root.RemoveChild(node));
             
             await Tree.WaitForEvents(); // make sure _Ready is called.
             return node;
         }
 
         /// <summary>
-        /// Loads a scene from the given path and adds it to the root of the tree. The scene will also
-        /// be registered as the <see cref="SceneTree.CurrentScene"/>. Finally the scene will be scheduled
-        /// for automatic cleanup when this fixture is cleaned up.
+        /// Loads a scene from the given path and adds it to the root of the tree. The scene will be scheduled
+        /// for automatic removal when the fixture's <see cref="Cleanup" /> method is called.
         /// </summary>
         public async Task<T> LoadAndAddScene<T>(string path) where T : Node
         {
             var instance = await LoadScene<T>(path);
-            var result =  await AddToRoot(instance);
-            Tree.CurrentScene = instance;
-            return result;
+            return await AddToRoot(instance);
         }
 
-        
+        public async Task<T> LoadAndAddScene<T>() where T : Node
+        {
+            var instance = await LoadScene<T>();
+            return await AddToRoot(instance);
+        }
+
+        /// <summary>
+        /// Loads and instantiates the scene that corresponds to the given script type. The scene must
+        /// be in the same directory, have the same name, and end with ".tscn". The instance will be
+        /// scheduled for automatic cleanup.
+        /// </summary>
+        /// <typeparam name="T">Script type attached to the scene.</typeparam>
+        /// <returns>Instantiated scene.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when type does not have a
+        /// <see cref="ScriptPathAttribute" />.</exception>
+        public async Task<T> LoadScene<T>() where T : Node
+        {
+            // make sure we run in the main thread
+            await Tree.NextFrame();
+            // get script path given to a class by the Godot source generators.
+            var attr = typeof(T).GetCustomAttribute<ScriptPathAttribute>()
+                ?? throw new InvalidOperationException(
+                    $"Type '{typeof(T)}' does not have a ScriptPathAttribute"
+                );
+            var path = Path.ChangeExtension(attr.Path, ".tscn");
+            return AutoFree(GD.Load<PackedScene>(path).Instantiate<T>());
+        }
+
+
         /// <summary>
         /// Loads a scene from the given path and instantiates it. The instance will be scheduled for automatic cleanup
         /// when this fixture is cleaned up.
