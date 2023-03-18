@@ -60,7 +60,11 @@ public partial class GraphEditDriverTest : DriverTest
         
         // THEN
         // the offset has changed by 2x it's width
-        firstNode.Offset.X.ShouldBe(firstNodeOffset.X + firstNode.Rect.Size.X * 2, 10);
+        // (pixels seem to be doubled on macOS :P)
+        var scale = (OS.GetName() == "macOS") ? 2f : 1f;
+        (firstNode.Offset.X * scale).ShouldBe(
+            firstNodeOffset.X + firstNode.Rect.Size.X * 2, 10
+        );
     }
 
     [Test]
