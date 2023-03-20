@@ -4,7 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2023-03-05
+## [2.0.0-pre2] - 2023-03-20
+### Breaking Changes
+
+- The `Fixture` API has been updated to provide a more consistent API interface.  All functions that create nodes  now have an optional `autoFree` parameter that enqueues the created node for auto-freeing on fixture cleanup. This parameter is `true` by default. Before some functions would free the nodes, others would not making it hard to predict when a node would be freed.
+- The `AddToRoot` function of the `Fixture` class now has a parameter `autoRemoveFromRoot` that controls whether the node is removed from the root node on fixture cleanup. This parameter is `true` by default. Before the node was not automatically removed from the root node on fixture cleanup and you had to either remove or free it yourself.
+
+### Added
+- The `Fixture` class now can instantiate a scene by naming convention. E.g. if you have a script `Player/Player.cs` and a scene `Player/Player.tscn` next to it, you can now instantiate the scene by calling `fixture.LoadScene<Player>()`. This makes your tests more robust to changes in the scene structure as you don't have to update the path in your test code. Thanks to @definitelyokay for providing a PR for this feature!
+
+- The tests can now run on GitHub using an emulated display driver. You can check the [workflow file](.github/workflows/visual_tests.yaml) for an example on how to set this up for your own project. Another big thanks to @definitelyokay for figuring this out and providing a PR for it!
+- If you want to contribute to Godot Test Driver and use Visual Studio Code there are now a few launch configurations in the [.vscode](.vscode) folder that make it easier to debug the tests. Thanks to @definitelyokay for providing a PR for this as well!
+
+## [2.0.0-pre1] - 2023-03-05
 ### Breaking Changes
 
 - Version 2.0.0 has been updated for Godot 4. It is no longer compatible with Godot 3.

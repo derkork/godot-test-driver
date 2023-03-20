@@ -16,7 +16,7 @@ GodotTestDriver is not a test framework. There are already a lot of test framewo
 GodotTestDriver is published on [NuGet](https://www.nuget.org/packages/GodotTestDriver). To add it use this command line command (or the NuGet facilities of your IDE):
 
 ```bash
-dotnet add package GodotTestDriver --version 2.0.0-pre1
+dotnet add package GodotTestDriver --version 2.0.0-pre2
 ```
 
 If you are targeting `netstandard2.1` also add the following lines to your `.csproj` file to make it work with Godot:
@@ -117,6 +117,19 @@ class MyTest {
     }
 }
 ```
+
+#### Loading scenes by naming convention
+
+If you have many scenes in your project, it may become cumbersome to hard-code scene paths into your tests all the time. This will also make it harder to move scenes around in your project. 
+
+To solve this, you can make your scenes follow a naming convention. For example, say the root node of your `Player/Player.tscn` scene is the  `Player` node which has its script stored in `Player/Player.cs`.  You can then simply load the scene like this:
+
+```cs
+var player = await fixture.LoadScene<Player>();
+```
+
+For this to work, it is important that the scene file and the script file have the same name, same spelling and casing and must reside in the same directory. The only difference must be the file extension - `.tscn` for the scene file and `.cs` for the script file.
+
 
 ## Test drivers
 ### Introduction
