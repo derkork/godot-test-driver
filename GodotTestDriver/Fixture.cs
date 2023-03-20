@@ -37,43 +37,70 @@ namespace GodotTestDriver
         /// Adds a node to the root of the tree. When this call returns the node will be in the scene and its
         /// <see cref="Node._Ready"/> function will have been called by Godot. 
         /// </summary>
-        public async Task<T> AddToRoot<T>(T node) where T :Node
+        /// <param name="node">the node to be added to the tree root</param>
+        /// <param name="autoRemoveFromRoot">if set to true, the node will be automatically removed from the root, when
+        /// fixture's <see cref="Cleanup" /> method is called. Note that it will _not_ be freed.</param>
+        public async Task<T> AddToRoot<T>(T node, bool autoRemoveFromRoot = true) where T :Node
         {
             await Tree.NextFrame();
-            
             Tree.Root.AddChild(node);
-            AddCleanupStep(() => Tree.Root.RemoveChild(node));
+            
+            if (autoRemoveFromRoot) 
+            {
+                AddCleanupStep(() =>
+                {
+                    if (Object.IsInstanceValid(node) && Object.IsInstanceValid(node.GetParent()))
+                    {
+                        node.GetParent().RemoveChild(node);
+                    }
+                });
+            }
             
             await Tree.WaitForEvents(); // make sure _Ready is called.
             return node;
         }
 
         /// <summary>
-        /// Loads a scene from the given path and adds it to the root of the tree. The scene will be scheduled
-        /// for automatic removal when the fixture's <see cref="Cleanup" /> method is called.
+        /// Loads a scene from the given path and adds it to the root of the tree. 
         /// </summary>
-        public async Task<T> LoadAndAddScene<T>(string path) where T : Node
+        /// <param name="path">the path to the scene file that should be loaded</param>
+        /// <param name="autoFree">if set to true, the instance will be automatically freed when the fixture's
+        /// <see cref="Cleanup" /> method is called</param>
+        /// <param name="autoRemoveFromRoot">if set to true, the scene  will be automatically removed from the root, when
+        /// fixture's <see cref="Cleanup" /> method is called. Note that it will _not_ be freed automatically unless
+        /// <see cref="autoFree"/> is also set to true.</param>
+        public async Task<T> LoadAndAddScene<T>(string path, bool autoFree = true, bool autoRemoveFromRoot = true) where T : Node
         {
-            var instance = await LoadScene<T>(path);
-            return await AddToRoot(instance);
+            var instance = await LoadScene<T>(path, autoFree);
+            return await AddToRoot(instance, !autoFree && autoRemoveFromRoot);
         }
 
-        public async Task<T> LoadAndAddScene<T>() where T : Node
+        
+        /// <summary>
+        /// Loads and instantiates the scene that corresponds to the given script type ands adds it to the root of the tree.
+        /// </summary>
+        /// <param name="autoFree">if set to true, the instance will be automatically freed when the fixture's
+        /// <see cref="Cleanup" /> method is called</param>
+        /// <param name="autoRemoveFromRoot">if set to true, the scene  will be automatically removed from the root, when
+        /// fixture's <see cref="Cleanup" /> method is called. Note that it will _not_ be freed automatically unless
+        /// <see cref="autoFree"/> is also set to true.</param>
+        public async Task<T> LoadAndAddScene<T>(bool autoFree = true, bool autoRemoveFromRoot = true) where T : Node
         {
-            var instance = await LoadScene<T>();
-            return await AddToRoot(instance);
+            var instance = await LoadScene<T>(autoFree);
+            return await AddToRoot(instance, !autoFree && autoRemoveFromRoot);
         }
 
         /// <summary>
         /// Loads and instantiates the scene that corresponds to the given script type. The scene must
-        /// be in the same directory, have the same name, and end with ".tscn". The instance will be
-        /// scheduled for automatic cleanup.
+        /// be in the same directory, have the same name, and end with ".tscn".
         /// </summary>
+        /// <param name="autoFree">if set to true, the instance will be automatically freed when the fixture's
+        /// <see cref="Cleanup" /> method is called</param>
         /// <typeparam name="T">Script type attached to the scene.</typeparam>
         /// <returns>Instantiated scene.</returns>
         /// <exception cref="InvalidOperationException">Thrown when type does not have a
         /// <see cref="ScriptPathAttribute" />.</exception>
-        public async Task<T> LoadScene<T>() where T : Node
+        public async Task<T> LoadScene<T>(bool autoFree = true) where T : Node
         {
             // make sure we run in the main thread
             await Tree.NextFrame();
@@ -83,19 +110,34 @@ namespace GodotTestDriver
                     $"Type '{typeof(T)}' does not have a ScriptPathAttribute"
                 );
             var path = Path.ChangeExtension(attr.Path, ".tscn");
-            return AutoFree(GD.Load<PackedScene>(path).Instantiate<T>());
+            return await LoadScene<T>(path, autoFree);
         }
 
 
         /// <summary>
-        /// Loads a scene from the given path and instantiates it. The instance will be scheduled for automatic cleanup
-        /// when this fixture is cleaned up.
+        /// Loads a scene from the given path and instantiates it but does not add it to the tree. 
         /// </summary>
-        public async Task<T> LoadScene<T>(string path) where T : Node
+        /// <param name="autoFree">if set to true, the instance will be automatically freed when the fixture's
+        /// <see cref="Cleanup" /> method is called</param>
+        public async Task<T> LoadScene<T>(string path, bool autoFree = true) where T : Node
         {
             // make sure we run in the main thread
             await Tree.NextFrame();
-            return AutoFree(GD.Load<PackedScene>(path).Instantiate<T>());
+
+            var scene = GD.Load<PackedScene>(path);
+            if (!Object.IsInstanceValid(scene))
+            {
+                throw new ArgumentException("Could not load scene from path, it very likely does not exist: " + path);
+            }
+            
+            var node =  scene.Instantiate();
+
+            if (node is not T instance)
+            {
+                throw new ArgumentException("The root node of the scene is not of the expected type: " + typeof(T).FullName);
+            }
+
+            return autoFree ? AutoFree(instance) : instance;
         }
         
         
@@ -108,7 +150,7 @@ namespace GodotTestDriver
             // References are automatically freed, so calling AutoFree on references is wrong.
             if (toFree is RefCounted)
             {
-                Log.Error("Trying to auto-free a reference type. I will ignore this but you should probably not do this.");
+                Log.Error("Trying to auto-free an object that extends RefCounted. I will ignore this but you should probably not do this.");
                 return toFree;
             }
             
@@ -116,8 +158,24 @@ namespace GodotTestDriver
             {
                 // it can happen that a node is already freed when the auto-free is running because
                 // the test freed it, or a parent node was freed.
-                if (Object.IsInstanceValid(toFree))
+                if (!Object.IsInstanceValid(toFree))
                 {
+                    return;
+                }
+                
+                if (toFree is Node node)
+                {
+                    // if the node has a valid parent, remove it from the parent first
+                    if (Object.IsInstanceValid(node.GetParent()))
+                    {
+                        node.GetParent().RemoveChild(node);
+                    }
+                    // use QueueFree for nodes to ensure it is safe to free them.
+                    node.QueueFree();
+                }
+                else
+                {
+                    // normal objects can be freed directly.
                     toFree.Free();
                 }
             });
