@@ -1,10 +1,28 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2023-05-27
+
+### Added
+
+- New methods in `ActionsControlExtensions` allows triggering Godot input actions: `StartAction`, `EndAction`, `HoldActionFor`, and `TriggerAction`.
+- A new method, `KeyboardControlExtensions.HoldKeyFor`, simulates a key combination being held for a certain amount of time.
+- New `WaitExtensions.WaitUntil` method enables waiting until a predicate function returns true, or a configurable timeout occurs.
+- New `WaitExtensions.Wait` method enables processing frames for a given length of time.
+- New `WaitExtensions.WaitPhysics` enables processing physics frames for a given length of time.
+
+### Fixed
+
+- All node extension methods in `WaitExtensions` now require the node to be in the scene tree.
+
+## [2.0.0] - 2023-03-05
+
 ## [2.0.0-pre2] - 2023-03-20
+
 ### Breaking Changes
 
 - The `Fixture` API has been updated to provide a more consistent API interface.  All functions that create nodes  now have an optional `autoFree` parameter that enqueues the created node for auto-freeing on fixture cleanup. This parameter is `true` by default. Before some functions would free the nodes, others would not making it hard to predict when a node would be freed.
@@ -17,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If you want to contribute to Godot Test Driver and use Visual Studio Code there are now a few launch configurations in the [.vscode](.vscode) folder that make it easier to debug the tests. Thanks to @definitelyokay for providing a PR for this as well!
 
 ## [2.0.0-pre1] - 2023-03-05
+
 ### Breaking Changes
 
 - Version 2.0.0 has been updated for Godot 4. It is no longer compatible with Godot 3.
@@ -41,22 +60,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ItemListDriver` now has an `ActivateItemWithText` function to activate (double click or press enter on) an item by its text.
 - `RichTextLabelDriver` now has a `IsBBCodeEnabled` property to check whether BBCode is enabled.
 
-### Fixed 
+### Fixed
+
 - `IsFullyInView` in `ControlDriver` now works correctly when the canvas transform is translated or scaled.
 - `SelectableItems` in `ItemListDriver` now no longer returns items that are disabled.
 
 
 ## [1.0.0] - 2022-07-14
+
 ### Breaking Changes
-- `GraphEditDriver` will now throw an exception when trying to get connections from it and the underlying `GraphEdit` does not exist in the tree. Previously it would return an empty list of connections. This is to make it consistent with the behaviour of the other drivers.
+
+- `GraphEditDriver` will now throw an exception when trying to get connections from it and the underlying `GraphEdit` does not exist in the tree. Previously it would return an empty list of connections. This is to make it consistent with the behavior of the other drivers.
 
 ### Added
+
 - `GraphEditDriver` now has two new methods `HasConnectionFrom` and `HasConnectionTo` which allow you to check whether a certain port is connected without having to know which other port it is connected to.
 
 ## [0.1.0] - 2022-07-08
+
 ### Added
-- Support for multiple .net targets. Now targets `net472` and `netstandard2.1`. 
+
+- Support for multiple .net targets. Now targets `net472` and `netstandard2.1`.
 - `GraphNodeDriver` now has a function `GetPortType` to to inspect the node's port types.
 
 ## [0.0.30] - 2022-06-24
+
 - Initial public release
