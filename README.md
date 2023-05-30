@@ -307,6 +307,22 @@ await node.TypeKey(KeyList.A);
 
 All functions will wait until the events have been properly processed.
 
+### Simulating other actions
+Since version 2.1.0 you can now also simulate actions like this:
+
+```csharp
+// start the jump action
+await node.StartAction("jump"); 
+// end the jump action
+await node.EndAction("jump");
+
+// trigger an action (start and end in one function)
+await node.TriggerAction("jump");
+
+// hold an action pressed for 1 second
+await node.HoldActionFor(1.0f, "jump");
+```
+
 ## Waiting extensions
 
 GodotTestDriver provides a number of extension functions on `SceneTree` which allow you to wait for certain events to happen. This is a common requirement in integration tests, where you will click or send some key strokes and then some action happens that takes a while to process.
