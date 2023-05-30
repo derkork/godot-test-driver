@@ -8,7 +8,9 @@ GodotTestDriver.Tests/coverage/*
 bin/
 obj/
 .generated/
-.vs/
 .DS_Store
 
+# IDEs
 **/.idea
+.vs/
+.vscode/extensions.json

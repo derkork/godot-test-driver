@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
@@ -51,7 +51,7 @@ public class ItemListDriverTest : DriverTest
         // the first item is selected
         _itemList.SelectedItems.Count.ShouldBe(1);
         _itemList.SelectedItems.First().ShouldBe("Normal Item 1");
-        
+
         // and the signal is emitted
         signalAwaiter.IsCompleted.ShouldBeTrue();
 
@@ -65,7 +65,7 @@ public class ItemListDriverTest : DriverTest
         // the second item is selected
         _itemList.SelectedItems.Count.ShouldBe(1);
         _itemList.SelectedItems.First().ShouldBe("Normal Item 2");
-        
+
         // and the signal is emitted
         signalAwaiter2.IsCompleted.ShouldBeTrue();
     }
@@ -86,7 +86,7 @@ public class ItemListDriverTest : DriverTest
         _itemList.SelectedItems.First().ShouldBe("Normal Item 1");
         _itemList.SelectedItems.Last().ShouldBe("Normal Item 2");
     }
-    
+
     [Test]
     public async Task MassSelectionWorks()
     {
@@ -107,15 +107,15 @@ public class ItemListDriverTest : DriverTest
         // WHEN
         // we select the first item
         await _itemList.SelectItemWithText("Normal Item 1");
-        
+
         // and deselect it
         await _itemList.DeselectItemWithText("Normal Item 1");
-        
+
         // THEN
         // no items are selected
         _itemList.SelectedItems.Count.ShouldBe(0);
     }
-    
+
     [Test]
     public async Task MassDeselectionWorks()
     {
@@ -123,10 +123,10 @@ public class ItemListDriverTest : DriverTest
         // we select the two items
         await _itemList.SelectItemWithText("Normal Item 1");
         await _itemList.SelectItemWithText("Normal Item 2", true);
-        
+
         // and deselect all
         await _itemList.DeselectAll();
-        
+
         // THEN
         // no items are selected
         _itemList.SelectedItems.Count.ShouldBe(0);
@@ -152,7 +152,7 @@ public class ItemListDriverTest : DriverTest
         // we try to select a disabled item, an InvalidOperationException should be thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _itemList.SelectItemWithText("Disabled Item"));
     }
-    
+
     [Test]
     public async Task SelectingNonExistingItemsDoesNotWork()
     {
@@ -160,7 +160,7 @@ public class ItemListDriverTest : DriverTest
         // we try to select a non-existing item, an InvalidOperationException should be thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _itemList.SelectItemWithText("Non-existing Item"));
     }
-    
+
     [Test]
     public async Task SelectingUnselectableItemsDoesNotWork()
     {

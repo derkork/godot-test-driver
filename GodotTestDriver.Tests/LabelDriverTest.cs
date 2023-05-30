@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
 using Shouldly;
 
-public partial class LabelDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class LabelDriverTest : DriverTest
 {
     private readonly LabelDriver _label;
 
@@ -20,7 +19,7 @@ public partial class LabelDriverTest : DriverTest
     {
         // WHEN
         // everything is set up
-        
+
         // THEN
         // the label text is "Hello World!"
         _label.Text.ShouldBe("Hello World!");

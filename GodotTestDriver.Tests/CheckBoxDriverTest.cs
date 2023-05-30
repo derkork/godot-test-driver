@@ -1,12 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
+using JetBrains.Annotations;
 using Shouldly;
 
-public partial class CheckBoxDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+[UsedImplicitly]
+public class CheckBoxDriverTest : DriverTest
 {
     private readonly CheckBoxDriver _checkBox;
 
@@ -21,15 +23,15 @@ public partial class CheckBoxDriverTest : DriverTest
         // WHEN
         // i click the checkbox
         await _checkBox.ClickCenter();
-        
+
         // THEN
         // the checkbox is checked
         _checkBox.IsChecked.ShouldBeTrue();
-        
+
         // WHEN
         // i click the checkbox again
         await _checkBox.ClickCenter();
-        
+
         // THEN
         // the checkbox is unchecked
         _checkBox.IsChecked.ShouldBeFalse();

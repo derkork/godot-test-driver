@@ -1,10 +1,11 @@
-﻿using Godot;
-using GoDotTest;
+﻿using Chickensoft.GoDotTest;
+using Godot;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
 using Shouldly;
 
-public partial class RichTextLabelDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class RichTextLabelDriverTest : DriverTest
 {
     private readonly RichTextLabelDriver _richTextLabel;
     private readonly RichTextLabelDriver _bbCodeRichTextLabel;

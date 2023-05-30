@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
+using JetBrains.Annotations;
 using Shouldly;
 
-public partial class TabContainerDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+[UsedImplicitly]
+public class TabContainerDriverTest : DriverTest
 {
     private readonly TabContainerDriver _tabContainer;
     private readonly ControlDriver<Control> _firstTabContent;
@@ -35,7 +38,7 @@ public partial class TabContainerDriverTest : DriverTest
         _firstTabContent.IsVisible.ShouldBeTrue();
         _secondTabContent.IsVisible.ShouldBeFalse();
     }
-    
+
     // changing a tab works
     [Test]
     public async Task ChangingTabsWorks()

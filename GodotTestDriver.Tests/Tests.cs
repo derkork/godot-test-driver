@@ -1,8 +1,9 @@
-namespace GodotTestDriver.Tests;
-
+using Chickensoft.GoDotTest;
 using System.Reflection;
 using Godot;
-using GoDotTest;
+
+namespace GodotTestDriver.Tests;
+
 
 public partial class Tests : Node2D {
   /// <summary>

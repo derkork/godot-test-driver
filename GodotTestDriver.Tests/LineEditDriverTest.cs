@@ -1,13 +1,13 @@
-using Godot;
 using System;
 using System.Threading.Tasks;
-using GoDotTest;
+using Chickensoft.GoDotTest;
+using Godot;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
-using GodotTestDriver.Util;
 using Shouldly;
 
-public partial class LineEditDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class LineEditDriverTest : DriverTest
 {
     private readonly LineEditDriver _lineEdit;
 
@@ -40,58 +40,58 @@ public partial class LineEditDriverTest : DriverTest
         // and the text submitted signal is emitted
         awaiter.IsCompleted.ShouldBeTrue();
     }
-    
+
     [Test]
     public async Task DisabledLineEditCannotBeEdited()
     {
         // SETUP
         _lineEdit.PresentRoot.Editable = false;
-        
+
         // WHEN
         // i try to type into the disabled line edit
         // THEN
         // an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Type("hello"));
     }
-    
+
     [Test]
     public async Task DisabledLineEditCannotBeSubmitted()
     {
         // SETUP
         _lineEdit.PresentRoot.Editable = false;
-        
+
         // WHEN
         // i try to submit text into the disabled line edit
         // THEN
         // an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Submit("hello"));
     }
-    
-    
+
+
     [Test]
     public async Task InvisibleLineEditCannotBeEdited()
     {
         // SETUP
         _lineEdit.PresentRoot.Visible = false;
-        
+
         // WHEN
         // i try to type into the invisible line edit
         // THEN
         // an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Type("hello"));
     }
-    
+
     [Test]
     public async Task InvisibleLineEditCannotBeSubmitted()
     {
         // SETUP
         _lineEdit.PresentRoot.Visible = false;
-        
+
         // WHEN
         // i try to submit text into the invisible line edit
         // THEN
         // an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Submit("hello"));
     }
-    
+
 }

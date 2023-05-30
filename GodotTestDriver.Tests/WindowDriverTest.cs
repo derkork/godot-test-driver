@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
 using Shouldly;
 
-public partial class WindowDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class WindowDriverTest : DriverTest
 {
     private readonly WindowDriver _window;
 
@@ -20,16 +21,16 @@ public partial class WindowDriverTest : DriverTest
         // GIVEN
         // the window is visible
         _window.IsVisible.ShouldBeTrue();
-        
+
         // WHEN
         // i close the window
         await _window.Close();
-        
+
         // THEN
         // the window is not visible
         _window.IsVisible.ShouldBeFalse();
     }
-    
+
     // dragging the window works
     [Test]
     public async Task WindowDraggingWorks()
@@ -38,7 +39,7 @@ public partial class WindowDriverTest : DriverTest
         // WHEN
         // i drag the window
         await _window.DragByPixels(100, 100);
-        
+
         // THEN
         // the window is visible
         _window.IsVisible.ShouldBeTrue();

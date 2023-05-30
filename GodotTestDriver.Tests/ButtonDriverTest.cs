@@ -1,18 +1,18 @@
 using System;
 using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 
 namespace GodotTestDriver.Tests;
 
 using Godot;
-using GoDotTest;
 using Shouldly;
 
 [UsedImplicitly]
 public class ButtonDriverTest : DriverTest
 {
-    
+
     private readonly ButtonDriver _button;
     private readonly LabelDriver _label;
     private readonly ControlDriver<Panel> _panel;
@@ -36,7 +36,7 @@ public class ButtonDriverTest : DriverTest
         // and the panel disappears
         _panel.IsVisible.ShouldBeFalse();
     }
-    
+
     [Test]
     public async Task ClickingDisabledButtonThrowsException()
     {
@@ -46,7 +46,7 @@ public class ButtonDriverTest : DriverTest
         // i click the button then an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _button.ClickCenter());
     }
-    
+
     [Test]
     public async Task ClickingHiddenButtonThrowsException()
     {

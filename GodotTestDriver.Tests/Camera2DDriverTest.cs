@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
@@ -22,7 +21,7 @@ public class Camera2DDriverTest : DriverTest
         _centerSprite = new Sprite2DDriver(() => RootNode.GetNode<Sprite2D>("CenterSprite"));
         _offCenterSprite = new Sprite2DDriver(() => RootNode.GetNode<Sprite2D>("OffCenterSprite"));
     }
-    
+
     [Test]
     public void Camera2DIsPresent()
     {
@@ -32,17 +31,17 @@ public class Camera2DDriverTest : DriverTest
         //  and off center sprite is not visible
         _offCenterSprite.IsFullyInView.ShouldBeFalse();
     }
-    
+
     [Test]
     public async Task Camera2DCanMove()
     {
         // WHEN
         // I move camera to off-center sprite
         await _camera2D.MoveIntoView(_offCenterSprite.GlobalPosition, 2);
-        
+
         // THEN
         //  the off center sprite is not visible
         _offCenterSprite.IsFullyInView.ShouldBeTrue();
     }
-    
+
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using Godot;
 using JetBrains.Annotations;
@@ -25,9 +24,7 @@ namespace GodotTestDriver.Util
         /// <param name="tree">Scene tree.</param>
         /// <param name="seconds">Time to wait.</param>
         /// <param name="action">Action to perform.</param>
-        public static async Task WithinSeconds(
-            this SceneTree tree, float seconds, Action action
-        )
+        public static async Task WithinSeconds(this SceneTree tree, float seconds, Action action)
         {
             var timeout = new Timeout(seconds);
             while (true)
@@ -61,9 +58,8 @@ namespace GodotTestDriver.Util
         /// <param name="node">Godot node.</param>
         /// <param name="seconds">Time to wait.</param>
         /// <param name="action">Action to perform.</param>
-        public static async Task WithinSeconds(
-            this Node node, float seconds, Action action
-        ) => await node.VerifyInTree().WithinSeconds(seconds, action);
+        public static async Task WithinSeconds(this Node node, float seconds, Action action)
+            => await node.VerifyInTree().WithinSeconds(seconds, action);
 
         /// <summary>
         /// Waits for the given amount of seconds for the given condition to be
@@ -75,9 +71,7 @@ namespace GodotTestDriver.Util
         /// <param name="condition">Predicate that will be invoked after
         /// waiting.</param>
         /// <exception cref="TimeoutException" />
-        public static async Task WithinSeconds(
-            this SceneTree tree, float seconds, Func<bool> condition
-        )
+        public static async Task WithinSeconds(this SceneTree tree, float seconds, Func<bool> condition)
         {
             var timeout = new Timeout(seconds);
             do
@@ -89,10 +83,7 @@ namespace GodotTestDriver.Util
                 }
             } while (!timeout.IsReached);
 
-            throw new TimeoutException
-            (
-                "Condition was not true within the given time."
-            );
+            throw new TimeoutException("Condition was not true within the given time.");
         }
 
         /// <summary>
@@ -105,11 +96,8 @@ namespace GodotTestDriver.Util
         /// <param name="condition">Predicate that will be invoked after
         /// waiting.</param>
         /// <exception cref="TimeoutException" />
-        public static async Task WithinSeconds
-        (
-            this Node node, float seconds, Func<bool> condition
-        ) =>
-            await node.VerifyInTree().WithinSeconds(seconds, condition);
+        public static async Task WithinSeconds(this Node node, float seconds, Func<bool> condition)
+            => await node.VerifyInTree().WithinSeconds(seconds, condition);
 
         /// <summary>
         /// Runs the given action repeatedly every frame for the given amount
@@ -120,9 +108,7 @@ namespace GodotTestDriver.Util
         /// <param name="tree">Scene tree.</param>
         /// <param name="seconds">Time to wait.</param>
         /// <param name="action">Action to perform each frame.</param>
-        public static async Task DuringSeconds(
-            this SceneTree tree, float seconds, Action action
-        )
+        public static async Task DuringSeconds(this SceneTree tree, float seconds, Action action)
         {
             var timeout = new Timeout(seconds);
             do
@@ -141,13 +127,8 @@ namespace GodotTestDriver.Util
         /// <param name="node">Godot node.</param>
         /// <param name="seconds">Time to wait.</param>
         /// <param name="action">Action to perform each frame.</param>
-        public static async Task DuringSeconds
-        (
-            this Node node, float seconds, Action action
-        )
-        {
-            await node.VerifyInTree().DuringSeconds(seconds, action);
-        }
+        public static async Task DuringSeconds(this Node node, float seconds, Action action)
+            => await node.VerifyInTree().DuringSeconds(seconds, action);
 
         /// <summary>
         /// Waits for the events triggered by the most recent action to be
@@ -155,9 +136,7 @@ namespace GodotTestDriver.Util
         /// </summary>
         /// <param name="tree">Scene tree.</param>
         public static async Task WaitForEvents(this SceneTree tree)
-        {
-            await tree.NextFrame(2);
-        }
+            => await tree.NextFrame(2);
 
         /// <summary>
         /// Waits for the events triggered by the most recent action to be
@@ -180,8 +159,7 @@ namespace GodotTestDriver.Util
         {
             while (frames > 0)
             {
-                _ = await tree
-                    .ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                _ = await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
                 frames--;
             }
         }
@@ -195,9 +173,7 @@ namespace GodotTestDriver.Util
         /// to a single frame.</param>
         /// <exception cref="InvalidOperationException" />
         public static async Task ProcessFrame(this Node node, int frames = 1)
-        {
-            await node.VerifyInTree().NextFrame(frames);
-        }
+            => await node.VerifyInTree().NextFrame(frames);
 
         /// <summary>
         /// Waits until the given number of physics frames have passed. Returns
@@ -205,15 +181,11 @@ namespace GodotTestDriver.Util
         /// </summary>
         /// <param name="tree">Scene tree.</param>
         /// <param name="frames">Number of frames to wait.</param>
-        public static async Task PhysicsProcessFrame
-        (
-            this SceneTree tree, int frames = 1
-        )
+        public static async Task PhysicsProcessFrame(this SceneTree tree, int frames = 1)
         {
             while (frames > 0)
             {
-                _ = await tree
-                    .ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                _ = await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 frames--;
             }
         }
@@ -224,12 +196,8 @@ namespace GodotTestDriver.Util
         /// </summary>
         /// <param name="node">Godot node.</param>
         /// <param name="frames">Number of frames to wait.</param>
-        public static async Task PhysicsProcessFrame(
-            this Node node, int frames = 1
-        )
-        {
-            await node.VerifyInTree().PhysicsProcessFrame(frames);
-        }
+        public static async Task PhysicsProcessFrame(this Node node, int frames = 1)
+            => await node.VerifyInTree().PhysicsProcessFrame(frames);
 
         /// <summary>
         /// Waits for frames to pass until the given amount of time have
@@ -238,9 +206,7 @@ namespace GodotTestDriver.Util
         /// <param name="node">Godot node.</param>
         /// <param name="seconds">Time to wait.</param>
         public static async Task Wait(this Node node, float seconds)
-        {
-            await node.VerifyInTree().Wait(seconds);
-        }
+            => await node.VerifyInTree().Wait(seconds);
 
         /// <summary>
         /// Waits for frames to pass until the given amount of time has
@@ -264,9 +230,7 @@ namespace GodotTestDriver.Util
         /// <param name="node">Godot node.</param>
         /// <param name="seconds">Time to wait.</param>
         public static async Task WaitPhysics(this Node node, float seconds)
-        {
-            await node.VerifyInTree().WaitPhysics(seconds);
-        }
+            => await node.VerifyInTree().WaitPhysics(seconds);
 
         /// <summary>
         /// Waits for physics frames to pass until the given amount of time has
@@ -291,12 +255,8 @@ namespace GodotTestDriver.Util
         /// <param name="node">Godot node.</param>
         /// <param name="condition">Predicate to check each frame.</param>
         /// <param name="timeoutSeconds">Time to wait.</param>
-        public static async Task WaitUntil(
-            this Node node, Func<bool> condition, float timeoutSeconds = 3.0f
-        )
-        {
-            await node.VerifyInTree().WaitUntil(condition, timeoutSeconds);
-        }
+        public static async Task WaitUntil(this Node node, Func<bool> condition, float timeoutSeconds = 3.0f)
+            => await node.VerifyInTree().WaitUntil(condition, timeoutSeconds);
 
         /// <summary>
         /// Waits until the given predicate returns true, or the timeout
@@ -307,33 +267,28 @@ namespace GodotTestDriver.Util
         /// <param name="condition">Predicate to check each frame.</param>
         /// <param name="timeoutSeconds">Time to wait.</param>
         /// <exception cref="TimeoutException" />
-        public static async Task WaitUntil(
-            this SceneTree tree,
-            Func<bool> condition,
-            float timeoutSeconds = 3.0f
-        )
+        public static async Task WaitUntil(this SceneTree tree, Func<bool> condition, float timeoutSeconds = 3.0f)
         {
             var timeout = new Timeout(timeoutSeconds);
             while (!condition() && !timeout.IsReached)
             {
                 await tree.NextFrame();
             }
+
             if (!condition())
             {
-                throw new TimeoutException
-                (
-                    "Timeout while waiting for condition to be true."
-                );
+                throw new TimeoutException("Timeout while waiting for condition to be true.");
             }
         }
 
+        /// <summary>
+        /// Verify that the given node is inside a tree, and return the tree. Throws an InvalidOperationException
+        /// if the node is not inside a tree.
+        /// </summary>
         private static SceneTree VerifyInTree(this Node node)
         {
             return !node.IsInsideTree()
-                ? throw new InvalidOperationException
-                (
-                    "Node is not inside a tree."
-                )
+                ? throw new InvalidOperationException("Node is not inside a tree.")
                 : node.GetTree();
         }
     }

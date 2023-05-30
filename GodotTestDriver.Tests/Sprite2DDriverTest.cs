@@ -1,10 +1,11 @@
-﻿using Godot;
-using GoDotTest;
+﻿using Chickensoft.GoDotTest;
+using Godot;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
 using Shouldly;
 
-public partial class Sprite2DDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class Sprite2DDriverTest : DriverTest
 {
     private readonly Sprite2DDriver _sprite2D;
     private readonly Sprite2DDriver _partiallyVisibleSprite2D;

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Chickensoft.GoDotTest;
 using Godot;
-using GoDotTest;
 using GodotTestDriver.Drivers;
-using GodotTestDriver.Tests;
 using Shouldly;
 
-public partial class OptionButtonDriverTest : DriverTest
+namespace GodotTestDriver.Tests;
+
+public class OptionButtonDriverTest : DriverTest
 {
     private readonly OptionButtonDriver _optionButton;
 
@@ -21,15 +22,15 @@ public partial class OptionButtonDriverTest : DriverTest
     {
         // WHEN
         // everything is set up
-        
+
         // THEN
         // we should have two selectable items
         _optionButton.SelectableItems.Count().ShouldBe(2);
-        
+
         // named "Normal Item 1" and "Normal Item 2"
         _optionButton.SelectableItems.First().ShouldBe("Normal Item 1");
         _optionButton.SelectableItems.Last().ShouldBe("Normal Item 2");
-        
+
     }
 
     [Test]
@@ -39,15 +40,15 @@ public partial class OptionButtonDriverTest : DriverTest
         // we select the first item
         var signalAwaiter = _optionButton.GetSignalAwaiter(OptionButton.SignalName.ItemSelected);
         await _optionButton.SelectItemWithText("Normal Item 1");
-        
+
         // THEN
         // the first item is selected
         _optionButton.SelectedItem.ShouldBe("Normal Item 1");
-        
+
         // and the signal is emitted
         signalAwaiter.IsCompleted.ShouldBeTrue();
     }
-    
+
     [Test]
     public async Task SelectingANonExistingItemThrowsException()
     {
@@ -55,15 +56,15 @@ public partial class OptionButtonDriverTest : DriverTest
         // we select a non-existing item
         var signalAwaiter = _optionButton.GetSignalAwaiter(OptionButton.SignalName.ItemSelected);
         var exception = await Should.ThrowAsync<Exception>(async () => await _optionButton.SelectItemWithText("Non-existing Item"));
-        
+
         // THEN
         // the exception is thrown
         exception.Message.ShouldContain("does not contain");
-        
+
         // and the signal is not emitted
         signalAwaiter.IsCompleted.ShouldBeFalse();
     }
-    
+
     [Test]
     public async Task SelectingADisabledItemThrowsException()
     {
@@ -71,16 +72,16 @@ public partial class OptionButtonDriverTest : DriverTest
         // we select a disabled item
         var signalAwaiter = _optionButton.GetSignalAwaiter(OptionButton.SignalName.ItemSelected);
         var exception = await Should.ThrowAsync<Exception>(async () => await _optionButton.SelectItemWithText("Disabled Item"));
-        
+
         // THEN
         // the exception is thrown
         exception.Message.ShouldContain("is not selectable");
-        
+
         // and the signal is not emitted
         signalAwaiter.IsCompleted.ShouldBeFalse();
     }
-    
-    
+
+
     [Test]
     public async Task SelectingASeparatorThrowsException()
     {
@@ -88,11 +89,11 @@ public partial class OptionButtonDriverTest : DriverTest
         // we select a separator
         var signalAwaiter = _optionButton.GetSignalAwaiter(OptionButton.SignalName.ItemSelected);
         var exception = await Should.ThrowAsync<Exception>(async () => await _optionButton.SelectItemWithText("Separator"));
-        
+
         // THEN
         // the exception is thrown
         exception.Message.ShouldContain("is not selectable");
-        
+
         // and the signal is not emitted
         signalAwaiter.IsCompleted.ShouldBeFalse();
     }
