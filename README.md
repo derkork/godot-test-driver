@@ -16,7 +16,7 @@ GodotTestDriver is not a test framework. There are already a lot of test framewo
 GodotTestDriver is published on [NuGet](https://www.nuget.org/packages/GodotTestDriver). To add it use this command line command (or the NuGet facilities of your IDE):
 
 ```bash
-dotnet add package GodotTestDriver --version 2.0.0-pre2
+dotnet add package GodotTestDriver --version 2.1.0
 ```
 
 If you are targeting `netstandard2.1` also add the following lines to your `.csproj` file to make it work with Godot:
