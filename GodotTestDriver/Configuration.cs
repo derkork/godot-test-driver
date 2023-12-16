@@ -10,22 +10,37 @@ using JetBrains.Annotations;
 [PublicAPI]
 public static class Configuration
 {
+    /// <summary>
+    /// Logging configuration instance.
+    /// </summary>
     public static LoggingConfiguration Logging { get; } = new LoggingConfiguration();
 
+    /// <summary>
+    /// Logging configuration.
+    /// </summary>
     public class LoggingConfiguration
     {
+        /// <summary>
+        /// Debug logger.
+        /// </summary>
         public static Action<string, object[]> DebugLogger
         {
             get => Log.DebugLogger;
             set => Log.DebugLogger = value;
         }
 
+        /// <summary>
+        /// Info logger.
+        /// </summary>
         public static Action<string, object[]> InfoLogger
         {
             get => Log.InfoLogger;
             set => Log.InfoLogger = value;
         }
 
+        /// <summary>
+        /// Error logger.
+        /// </summary>
         public static Action<string, object[]> ErrorLogger
         {
             get => Log.ErrorLogger;

@@ -11,6 +11,11 @@ using JetBrains.Annotations;
 /// [PublicAPI]
 public class Sprite2DDriver<T> : Node2DDriver<T> where T : Sprite2D
 {
+    /// <summary>
+    /// Creates a new generic Sprite2DDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Sprite2D subclass.</param>
+    /// <param name="description">Driver description.</param>
     public Sprite2DDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -50,6 +55,11 @@ public class Sprite2DDriver<T> : Node2DDriver<T> where T : Sprite2D
 [PublicAPI]
 public class Sprite2DDriver : Sprite2DDriver<Sprite2D>
 {
+    /// <summary>
+    /// Creates a new Sprite2DDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Sprite2D subclass.</param>
+    /// <param name="description">Driver description.</param>
     public Sprite2DDriver(Func<Sprite2D> producer, string description = "") : base(producer, description)
     {
     }

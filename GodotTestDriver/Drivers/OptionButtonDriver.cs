@@ -14,6 +14,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class OptionButtonDriver<T> : BaseButtonDriver<T> where T : OptionButton
 {
+    /// <summary>
+    /// Creates a new generic OptionButtonDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a OptionButton subclass.</param>
+    /// <param name="description">Driver description.</param>
     public OptionButtonDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -148,9 +153,17 @@ public class OptionButtonDriver<T> : BaseButtonDriver<T> where T : OptionButton
     }
 }
 
+/// <summary>
+/// Driver for <see cref="OptionButton"/> controls.
+/// </summary>
 [PublicAPI]
 public sealed class OptionButtonDriver : OptionButtonDriver<OptionButton>
 {
+    /// <summary>
+    /// Creates a new OptionButtonDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a OptionButton subclass.</param>
+    /// <param name="description">Driver description.</param>
     public OptionButtonDriver(Func<OptionButton> producer, string description = "") : base(producer, description)
     {
     }

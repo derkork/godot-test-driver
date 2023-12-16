@@ -15,6 +15,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class TabContainerDriver<T> : ControlDriver<T> where T : TabContainer
 {
+    /// <summary>
+    /// Creates a new generic TabContainerDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a TabContainer subclass.</param>
+    /// <param name="description">Driver description.</param>
     public TabContainerDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -101,6 +106,11 @@ public class TabContainerDriver<T> : ControlDriver<T> where T : TabContainer
 [PublicAPI]
 public sealed class TabContainerDriver : TabContainerDriver<TabContainer>
 {
+    /// <summary>
+    /// Creates a new TabContainerDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a TabContainer subclass.</param>
+    /// <param name="description">Driver description.</param>
     public TabContainerDriver(Func<TabContainer> producer, string description = "") : base(producer, description)
     {
     }

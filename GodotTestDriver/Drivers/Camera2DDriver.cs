@@ -13,6 +13,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class Camera2DDriver<T> : Node2DDriver<T> where T : Camera2D
 {
+    /// <summary>
+    /// Creates a new generic Camera2DDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Camera2D subclass.</param>
+    /// <param name="description">Driver description.</param>
     public Camera2DDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -71,6 +76,11 @@ public class Camera2DDriver<T> : Node2DDriver<T> where T : Camera2D
 [PublicAPI]
 public sealed class Camera2DDriver : Camera2DDriver<Camera2D>
 {
+    /// <summary>
+    /// Creates a new Camera2DDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Camera2D subclass.</param>
+    /// <param name="description">Driver description.</param>
     public Camera2DDriver(Func<Camera2D> producer, string description = "") : base(producer, description)
     {
     }

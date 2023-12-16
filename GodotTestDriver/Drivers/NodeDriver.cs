@@ -29,6 +29,11 @@ public abstract class NodeDriver<T> : NodeDriver where T : Node
     /// </summary>
     public string Description { get; }
 
+    /// <summary>
+    /// Creates a new generic NodeDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Node subclass.</param>
+    /// <param name="description">Driver description.</param>
     protected NodeDriver(Func<T> producer, string description = "")
     {
         _producer = producer;

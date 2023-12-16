@@ -13,6 +13,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class LineEditDriver<T> : ControlDriver<T> where T : LineEdit
 {
+    /// <summary>
+    /// Creates a new generic LineEditDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a LineEdit subclass.</param>
+    /// <param name="description">Driver description.</param>
     public LineEditDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -74,6 +79,11 @@ public class LineEditDriver<T> : ControlDriver<T> where T : LineEdit
 [PublicAPI]
 public sealed class LineEditDriver : LineEditDriver<LineEdit>
 {
+    /// <summary>
+    /// Creates a new LineEditDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a LineEdit subclass.</param>
+    /// <param name="description">Driver description.</param>
     public LineEditDriver(Func<LineEdit> producer, string description = "") : base(producer, description)
     {
     }

@@ -4,6 +4,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <LangVersion>10</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title>GodotTestDriver - A testing library for the Godot engine</Title>
     <Description>This library provides an API that simplifies writing integration tests for Godot projects.</Description>
     <PackageVersion>0.0.0-devbuild</PackageVersion>

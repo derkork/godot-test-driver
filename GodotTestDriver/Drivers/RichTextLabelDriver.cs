@@ -11,6 +11,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class RichTextLabelDriver<T> : ControlDriver<T> where T : RichTextLabel
 {
+    /// <summary>
+    /// Creates a new generic RichTextLabelDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a RichTextLabel subclass.</param>
+    /// <param name="description">Driver description.</param>
     public RichTextLabelDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -32,6 +37,11 @@ public class RichTextLabelDriver<T> : ControlDriver<T> where T : RichTextLabel
 [PublicAPI]
 public sealed class RichTextLabelDriver : RichTextLabelDriver<RichTextLabel>
 {
+    /// <summary>
+    /// Creates a new RichTextLabelDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a RichTextLabel subclass.</param>
+    /// <param name="description">Driver description.</param>
     public RichTextLabelDriver(Func<RichTextLabel> producer, string description = "") : base(producer, description)
     {
     }

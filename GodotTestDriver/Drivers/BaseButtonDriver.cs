@@ -13,6 +13,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class BaseButtonDriver<T> : ControlDriver<T> where T : BaseButton
 {
+    /// <summary>
+    /// Creates a new generic BaseButtonDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a BaseButton subclass.</param>
+    /// <param name="description">Driver description.</param>
     public BaseButtonDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -51,6 +56,12 @@ public class BaseButtonDriver<T> : ControlDriver<T> where T : BaseButton
         await button.GetTree().WaitForEvents();
     }
 
+    /// <summary>
+    /// Clicks the center of the button.
+    /// </summary>
+    /// <param name="button">Mouse button.</param>
+    /// <returns>Task that completes when the click finishes.</returns>
+    /// <exception cref="InvalidOperationException" />
     public override async Task ClickCenter(MouseButton button = MouseButton.Left)
     {
         if (Disabled)

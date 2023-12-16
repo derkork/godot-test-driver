@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Godot;
 using JetBrains.Annotations;
 
+/// <summary>
+/// Wait extensions for Godot nodes and scene trees.
+/// </summary>
 [PublicAPI]
 public static class WaitExtensions
 {
@@ -303,7 +306,7 @@ public static class WaitExtensions
     /// Verify that the given node is inside a tree, and return the tree. Throws an InvalidOperationException
     /// if the node is not inside a tree.
     /// </summary>
-    /// <param name="node"></param>
+    /// <param name="node">Node to verify.</param>
     /// <exception cref="InvalidOperationException"></exception>
     private static SceneTree VerifyInTree(this Node node)
     {

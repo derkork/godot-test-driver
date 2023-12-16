@@ -20,11 +20,11 @@ public class GraphEditDriver<TGraphEdit, TGraphNodeDriver, TGraphNode> : Control
     private readonly Func<Func<TGraphNode>, string, TGraphNodeDriver> _nodeDriverProducer;
 
     /// <summary>
-    /// Constructs a new driver.
+    /// Constructs a new GraphEdit driver.
     /// </summary>
     /// <param name="producer">a producer that produces the <see cref="GraphEdit"/> that this driver works on.</param>
-    /// <param name="nodeDriverProducer">a producer that produces a driver for a <see cref="GraphNode"/> child of the <see cref="GraphEdit"/></param>
-    /// <param name="description">a description for the node</param>
+    /// <param name="nodeDriverProducer">a producer that produces a driver for a <see cref="GraphNode"/> child of the <see cref="GraphEdit"/>.</param>
+    /// <param name="description">a description for the node.</param>
     public GraphEditDriver(Func<TGraphEdit> producer,
         Func<Func<TGraphNode>, string, TGraphNodeDriver> nodeDriverProducer,
         string description = "") : base(producer, description)
@@ -111,6 +111,9 @@ public class GraphEditDriver<TGraphEdit, TGraphNodeDriver, TGraphNode> : Control
             );
     }
 
+    /// <summary>
+    /// Drivers corresponding to the nodes in the graph.
+    /// </summary>
     public IEnumerable<TGraphNodeDriver> Nodes =>
         BuildDrivers(root => root.GetChildren().OfType<TGraphNode>(),
             node => _nodeDriverProducer(node, "-> GraphNode")
@@ -123,6 +126,11 @@ public class GraphEditDriver<TGraphEdit, TGraphNodeDriver, TGraphNode> : Control
 [PublicAPI]
 public class GraphEditDriver : GraphEditDriver<GraphEdit, GraphNodeDriver, GraphNode>
 {
+    /// <summary>
+    /// Constructs a new GraphEdit driver.
+    /// </summary>
+    /// <param name="producer">a producer that produces the <see cref="GraphEdit"/> that this driver works on.</param>
+    /// <param name="description">Driver description.</param>
     public GraphEditDriver(Func<GraphEdit> producer, string description = "") : base(producer,
         (node, nodeDescription) => new GraphNodeDriver(node, $"{description}-> {nodeDescription}"),
         description)

@@ -14,6 +14,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class ControlDriver<T> : CanvasItemDriver<T> where T : Control
 {
+    /// <summary>
+    /// Creates a new generic ControlDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Control subclass.</param>
+    /// <param name="description">Driver description.</param>
     public ControlDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }

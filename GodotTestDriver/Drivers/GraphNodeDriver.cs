@@ -13,12 +13,17 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class GraphNodeDriver<T> : ControlDriver<T> where T : GraphNode
 {
+    /// <summary>
+    /// Creates a new generic GraphNodeDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a GraphNode subclass.</param>
+    /// <param name="description">Driver description.</param>
     public GraphNodeDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
 
     /// <summary>
-    /// The title of the node
+    /// The title of the node.
     /// </summary>
     public string Title => PresentRoot.Title;
 
@@ -248,6 +253,11 @@ public class GraphNodeDriver<T> : ControlDriver<T> where T : GraphNode
 [PublicAPI]
 public sealed class GraphNodeDriver : GraphNodeDriver<GraphNode>
 {
+    /// <summary>
+    /// Creates a new GraphNodeDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a GraphNode subclass.</param>
+    /// <param name="description">Driver description.</param>
     public GraphNodeDriver(Func<GraphNode> producer, string description = "") : base(producer, description)
     {
     }

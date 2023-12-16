@@ -15,6 +15,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class ItemListDriver<T> : ControlDriver<T> where T : ItemList
 {
+    /// <summary>
+    /// Creates a new generic ItemListDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a ItemList subclass.</param>
+    /// <param name="description">Driver description.</param>
     public ItemListDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -204,6 +209,11 @@ public class ItemListDriver<T> : ControlDriver<T> where T : ItemList
 [PublicAPI]
 public sealed class ItemListDriver : ItemListDriver<ItemList>
 {
+    /// <summary>
+    /// Creates a new ItemListDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a ItemList subclass.</param>
+    /// <param name="description">Driver description.</param>
     public ItemListDriver(Func<ItemList> producer, string description = "") : base(producer, description)
     {
     }

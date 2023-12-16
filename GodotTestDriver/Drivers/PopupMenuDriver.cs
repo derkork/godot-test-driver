@@ -14,6 +14,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class PopupMenuDriver<T> : WindowDriver<T> where T : PopupMenu
 {
+    /// <summary>
+    /// Creates a new generic PopupMenuDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a PopupMenu subclass.</param>
+    /// <param name="description">Driver description.</param>
     public PopupMenuDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -255,6 +260,11 @@ public class PopupMenuDriver<T> : WindowDriver<T> where T : PopupMenu
 [PublicAPI]
 public sealed class PopupMenuDriver : PopupMenuDriver<PopupMenu>
 {
+    /// <summary>
+    /// Creates a new generic PopupMenuDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a PopupMenu subclass.</param>
+    /// <param name="description">Driver description.</param>
     public PopupMenuDriver(Func<PopupMenu> producer, string description = "") : base(producer, description)
     {
     }

@@ -14,6 +14,11 @@ using JetBrains.Annotations;
 [PublicAPI]
 public class WindowDriver<T> : NodeDriver<T> where T : Window
 {
+    /// <summary>
+    /// Creates a new generic WindowDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Window subclass.</param>
+    /// <param name="description">Driver description.</param>
     public WindowDriver(Func<T> producer, string description = "") : base(producer, description)
     {
     }
@@ -102,9 +107,17 @@ public class WindowDriver<T> : NodeDriver<T> where T : Window
     }
 }
 
+/// <summary>
+/// A driver for UI Windows.
+/// </summary>
 [PublicAPI]
 public class WindowDriver : WindowDriver<Window>
 {
+    /// <summary>
+    /// Creates a new WindowDriver.
+    /// </summary>
+    /// <param name="producer">Producer that creates a Window subclass.</param>
+    /// <param name="description">Driver description.</param>
     public WindowDriver(Func<Window> producer, string description = "") : base(producer, description)
     {
     }
