@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace GodotTestDriver.Tests;
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
@@ -7,19 +9,15 @@ using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
 
-namespace GodotTestDriver.Tests;
-
 [UsedImplicitly]
 public class ItemListDriverTest : DriverTest
 {
     private readonly ItemListDriver _itemList;
 
-
     public ItemListDriverTest(Node testScene) : base(testScene)
     {
         _itemList = new ItemListDriver(() => RootNode.GetNode<ItemList>("ItemList"));
     }
-
 
     [Test]
     public void InspectionWorks()
@@ -32,7 +30,7 @@ public class ItemListDriverTest : DriverTest
         _itemList.SelectableItems.Count.ShouldBe(2);
 
         // named "Normal Item 1" and "Normal Item 2"
-        _itemList.SelectableItems.First().ShouldBe("Normal Item 1");
+        _itemList.SelectableItems[0].ShouldBe("Normal Item 1");
         _itemList.SelectableItems.Last().ShouldBe("Normal Item 2");
 
         // and we should have a total of 4 items
@@ -44,27 +42,26 @@ public class ItemListDriverTest : DriverTest
     {
         // WHEN
         // we select the first item
-        var signalAwaiter =_itemList.GetSignalAwaiter(ItemList.SignalName.ItemSelected);
+        var signalAwaiter = _itemList.GetSignalAwaiter(ItemList.SignalName.ItemSelected);
         await _itemList.SelectItemWithText("Normal Item 1");
 
         // THEN
         // the first item is selected
         _itemList.SelectedItems.Count.ShouldBe(1);
-        _itemList.SelectedItems.First().ShouldBe("Normal Item 1");
+        _itemList.SelectedItems[0].ShouldBe("Normal Item 1");
 
         // and the signal is emitted
         signalAwaiter.IsCompleted.ShouldBeTrue();
 
-
         // WHEN
         // we select the second item
-        var signalAwaiter2 =_itemList.GetSignalAwaiter(ItemList.SignalName.ItemSelected);
+        var signalAwaiter2 = _itemList.GetSignalAwaiter(ItemList.SignalName.ItemSelected);
         await _itemList.SelectItemWithText("Normal Item 2");
 
         // THEN
         // the second item is selected
         _itemList.SelectedItems.Count.ShouldBe(1);
-        _itemList.SelectedItems.First().ShouldBe("Normal Item 2");
+        _itemList.SelectedItems[0].ShouldBe("Normal Item 2");
 
         // and the signal is emitted
         signalAwaiter2.IsCompleted.ShouldBeTrue();
@@ -83,7 +80,7 @@ public class ItemListDriverTest : DriverTest
         // THEN
         // both items are selected
         _itemList.SelectedItems.Count.ShouldBe(2);
-        _itemList.SelectedItems.First().ShouldBe("Normal Item 1");
+        _itemList.SelectedItems[0].ShouldBe("Normal Item 1");
         _itemList.SelectedItems.Last().ShouldBe("Normal Item 2");
     }
 
@@ -97,7 +94,7 @@ public class ItemListDriverTest : DriverTest
         // THEN
         // both items are selected
         _itemList.SelectedItems.Count.ShouldBe(2);
-        _itemList.SelectedItems.First().ShouldBe("Normal Item 1");
+        _itemList.SelectedItems[0].ShouldBe("Normal Item 1");
         _itemList.SelectedItems.Last().ShouldBe("Normal Item 2");
     }
 

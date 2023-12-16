@@ -1,9 +1,9 @@
-﻿using Chickensoft.GoDotTest;
+﻿namespace GodotTestDriver.Tests;
+
+using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 public class LabelDriverTest : DriverTest
 {

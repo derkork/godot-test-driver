@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 [UsedImplicitly]
 public class CheckBoxDriverTest : DriverTest

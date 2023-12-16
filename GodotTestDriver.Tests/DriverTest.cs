@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using JetBrains.Annotations;
 
-namespace GodotTestDriver.Tests;
-
 public abstract class DriverTest : TestClass
 {
     protected Fixture Fixture { get; }
-    protected  Node RootNode { get; private set; } = null!;
+    protected Node RootNode { get; private set; } = null!;
 
     protected DriverTest(Node testScene) : base(testScene)
     {
@@ -22,12 +22,10 @@ public abstract class DriverTest : TestClass
         RootNode = await Fixture.LoadAndAddScene<Node>($"res://{GetType().Name}.tscn");
     }
 
-
     [Cleanup]
     [UsedImplicitly]
     public async Task Cleanup()
     {
         await Fixture.Cleanup();
     }
-
 }

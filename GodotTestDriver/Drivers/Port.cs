@@ -1,48 +1,53 @@
+namespace GodotTestDriver.Drivers;
+
 using System;
 using Godot;
 
-namespace GodotTestDriver.Drivers
+/// <summary>
+/// This structure identifies a port of a <see cref="GraphNode"/>
+/// </summary>
+public readonly struct Port
 {
+    public int PortIndex { get; }
+
+    private readonly bool _isInput;
+
+    public bool IsInput => IsDefined && _isInput;
+    public bool IsOutput => IsDefined && !_isInput;
+
     /// <summary>
-    /// This structure identifies a port of a <see cref="GraphNode"/>
+    /// The default value of this is false, so if you do a Port foo = default you will get an undefined port id.
     /// </summary>
-    public readonly struct Port
+    public bool IsDefined { get; }
+
+    private Port(int port, bool isInput)
     {
-        public int PortIndex { get; }
-        
-        private readonly bool _isInput;
-        
-        public bool IsInput => IsDefined && _isInput;
-        public bool IsOutput => IsDefined && !_isInput;
-        
-        /// <summary>
-        /// The default value of this is false, so if you do a Port foo = default you will get an undefined port id.
-        /// </summary>
-        public bool IsDefined { get; }
-        
-        private Port(int port, bool isInput)
+        if (port < 0)
         {
-            if (port < 0)
-            {
-                throw new ArgumentException("Port index must be greater than or equal to zero.");
-            }
-            PortIndex = port;
-            _isInput = isInput;
-            IsDefined = true;
+            throw new ArgumentException("Port index must be greater than or equal to zero.");
         }
-        
-        
-        public static Port Input(int port) => new Port(port, true);
-        public static Port Output(int port) => new Port(port, false);
+        PortIndex = port;
+        _isInput = isInput;
+        IsDefined = true;
+    }
 
-        /// <summary>
-        /// The default Port is undefined and represents no port.
-        /// </summary>
-        public static readonly Port None = default;
+    public static Port Input(int port)
+    {
+        return new(port, true);
+    }
 
-        public override string ToString()
-        {
-            return IsInput ? $"Input Port {PortIndex}" : $"Output Port {PortIndex}";
-        }
+    public static Port Output(int port)
+    {
+        return new(port, false);
+    }
+
+    /// <summary>
+    /// The default Port is undefined and represents no port.
+    /// </summary>
+    public static readonly Port None;
+
+    public override string ToString()
+    {
+        return IsInput ? $"Input Port {PortIndex}" : $"Output Port {PortIndex}";
     }
 }

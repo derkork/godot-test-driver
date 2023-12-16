@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Linq;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 public class PopupMenuDriverTest : DriverTest
 {
@@ -26,7 +26,6 @@ public class PopupMenuDriverTest : DriverTest
 
         _popupMenu.IsVisible.ShouldBeFalse();
     }
-
 
     [Test]
     public async Task InspectionWorks()
@@ -78,5 +77,4 @@ public class PopupMenuDriverTest : DriverTest
         signalAwaiter.IsCompleted.ShouldBeTrue();
         signalAwaiter.GetResult()[0].ShouldBe(0); // the first item is selected
     }
-
 }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿namespace GodotTestDriver.Tests;
+
+using System;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 [UsedImplicitly]
 public class TextEditDriverTest : DriverTest
@@ -71,5 +71,4 @@ public class TextEditDriverTest : DriverTest
         // the text edit is read-only
         _textEdit.ReadOnly.ShouldBeTrue();
     }
-
 }

@@ -1,12 +1,12 @@
-﻿using System;
+﻿namespace GodotTestDriver.Tests;
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 public class OptionButtonDriverTest : DriverTest
 {
@@ -30,7 +30,6 @@ public class OptionButtonDriverTest : DriverTest
         // named "Normal Item 1" and "Normal Item 2"
         _optionButton.SelectableItems.First().ShouldBe("Normal Item 1");
         _optionButton.SelectableItems.Last().ShouldBe("Normal Item 2");
-
     }
 
     [Test]
@@ -80,7 +79,6 @@ public class OptionButtonDriverTest : DriverTest
         // and the signal is not emitted
         signalAwaiter.IsCompleted.ShouldBeFalse();
     }
-
 
     [Test]
     public async Task SelectingASeparatorThrowsException()

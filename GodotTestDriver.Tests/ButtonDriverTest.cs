@@ -1,18 +1,16 @@
+namespace GodotTestDriver.Tests;
+
 using System;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
+using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
-
-namespace GodotTestDriver.Tests;
-
-using Godot;
 using Shouldly;
 
 [UsedImplicitly]
 public class ButtonDriverTest : DriverTest
 {
-
     private readonly ButtonDriver _button;
     private readonly LabelDriver _label;
     private readonly ControlDriver<Panel> _panel;
@@ -23,7 +21,6 @@ public class ButtonDriverTest : DriverTest
         _label = new LabelDriver(() => RootNode.GetNode<Label>("Label"));
         _panel = new ControlDriver<Panel>(() => RootNode.GetNode<Panel>("Panel"));
     }
-
 
     [Test]
     public async Task ClickingWorks()

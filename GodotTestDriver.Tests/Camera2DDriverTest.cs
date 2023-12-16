@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿
+namespace GodotTestDriver.Tests;
+
+using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 [UsedImplicitly]
 public class Camera2DDriverTest : DriverTest
@@ -13,7 +14,6 @@ public class Camera2DDriverTest : DriverTest
     private readonly Camera2DDriver _camera2D;
     private readonly Sprite2DDriver _centerSprite;
     private readonly Sprite2DDriver _offCenterSprite;
-
 
     public Camera2DDriverTest(Node testScene) : base(testScene)
     {
@@ -43,5 +43,4 @@ public class Camera2DDriverTest : DriverTest
         //  the off center sprite is not visible
         _offCenterSprite.IsFullyInView.ShouldBeTrue();
     }
-
 }

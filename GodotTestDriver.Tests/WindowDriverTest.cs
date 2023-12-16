@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 public class WindowDriverTest : DriverTest
 {
@@ -31,7 +31,9 @@ public class WindowDriverTest : DriverTest
         _window.IsVisible.ShouldBeFalse();
     }
 
-    // dragging the window works
+    /// <summary>
+    /// dragging the window works
+    /// </summary>
     [Test]
     public async Task WindowDraggingWorks()
     {

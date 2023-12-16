@@ -1,11 +1,11 @@
+namespace GodotTestDriver.Tests;
+
 using System;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 public class LineEditDriverTest : DriverTest
 {
@@ -67,7 +67,6 @@ public class LineEditDriverTest : DriverTest
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Submit("hello"));
     }
 
-
     [Test]
     public async Task InvisibleLineEditCannotBeEdited()
     {
@@ -93,5 +92,4 @@ public class LineEditDriverTest : DriverTest
         // an exception is thrown
         await Should.ThrowAsync<InvalidOperationException>(async () => await _lineEdit.Submit("hello"));
     }
-
 }

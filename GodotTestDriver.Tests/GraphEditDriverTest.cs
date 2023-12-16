@@ -1,12 +1,12 @@
-﻿using System.Linq;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Linq;
 using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 [UsedImplicitly]
 public class GraphEditDriverTest : DriverTest
@@ -66,7 +66,7 @@ public class GraphEditDriverTest : DriverTest
         // (pixels seem to be doubled on macOS :P)
         var scale = (OS.GetName() == "macOS") ? 2f : 1f;
         (firstNode.Offset.X * scale).ShouldBe(
-            firstNodeOffset.X + firstNode.Rect.Size.X * 2, 10
+            firstNodeOffset.X + (firstNode.Rect.Size.X * 2), 10
         );
     }
 

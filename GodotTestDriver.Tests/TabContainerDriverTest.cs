@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿namespace GodotTestDriver.Tests;
+
+using System.Threading.Tasks;
 using Chickensoft.GoDotTest;
 using Godot;
 using GodotTestDriver.Drivers;
 using JetBrains.Annotations;
 using Shouldly;
-
-namespace GodotTestDriver.Tests;
 
 [UsedImplicitly]
 public class TabContainerDriverTest : DriverTest
@@ -18,7 +18,7 @@ public class TabContainerDriverTest : DriverTest
     {
         _tabContainer = new TabContainerDriver(() => RootNode.GetNode<TabContainer>("TabContainer"));
         _firstTabContent = new ControlDriver<Control>(() => _tabContainer.Root?.FindChild("First Tab Content") as Control);
-        _secondTabContent = new ControlDriver<Control>(() => (_tabContainer.Root?.FindChild("Second Tab Content") as Control));
+        _secondTabContent = new ControlDriver<Control>(() => _tabContainer.Root?.FindChild("Second Tab Content") as Control);
     }
 
     [Test]
@@ -39,7 +39,9 @@ public class TabContainerDriverTest : DriverTest
         _secondTabContent.IsVisible.ShouldBeFalse();
     }
 
-    // changing a tab works
+    /// <summary>
+    /// changing a tab works
+    /// </summary>
     [Test]
     public async Task ChangingTabsWorks()
     {
