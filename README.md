@@ -1,3 +1,7 @@
+# This project is now maintained at Chickensoft
+
+Please head over to https://github.com/chickensoft-games/GodotTestDriver to get the newest version of this project and access the latest documentation. Thank you!
+
 # Godot Test Driver
 
 ### What is it?
